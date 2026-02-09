@@ -165,6 +165,17 @@ Usuario: Usa "GPT4" como alias en las sesiones
 Claude: [Cambia a 20260209-001-GPT4.md]
 ```
 
+### Idioma
+
+**Por defecto:** Español de España
+
+Toda la documentación se genera en español peninsular:
+- Fechas: "9 de febrero de 2026"
+- Hora: formato 24h "14:30"
+- Vocabulario: ordenador, aplicación, móvil
+
+No configurable - es un estándar del sistema de documentación.
+
 ## 🔄 Integración con CHANGELOG
 
 Los archivos de sesión sirven como fuente para actualizar `CHANGELOG.md`:
@@ -214,5 +225,15 @@ MIT License - Ver LICENSE para detalles
 ---
 
 **Creado por:** Adrián (IPGSoft)  
-**Versión:** 1.0.0  
+**Versión:** 1.0.1 (mejorado testing + especificación idioma)  
 **Última actualización:** 9 de febrero de 2026
+
+## 🆕 Cambios en v1.0.1
+
+- ✅ Assertions mejoradas: verifican calidad de contenido, no solo existencia
+- ✅ Criterio "brief" ahora es concreto: <200 caracteres
+- ✅ Especificación explícita: **todo en Español de España**
+- ✅ Verificación de estructura completa de secciones
+
+Ver [CHANGELOG.md](CHANGELOG.md) para detalles completos.
+

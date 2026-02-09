@@ -18,6 +18,15 @@ Este skill permite que los agentes IA documenten automáticamente su trabajo dur
 - Al finalizar una sesión de trabajo
 - Cuando el usuario solicita explícitamente documentar el progreso
 
+## Idioma y localización
+
+**IMPORTANTE:** Toda la documentación debe generarse en **Español de España**.
+
+- Fechas: Formato "DD de MMMM de YYYY" (ej: "9 de febrero de 2026")
+- Hora: Formato 24h "HH:MM" (ej: "14:30")
+- Vocabulario: Español de España (ej: "ordenador" no "computadora", "aplicación" no "app")
+- Meses: enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre
+
 ## Estructura de archivos
 
 ```
