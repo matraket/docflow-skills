@@ -1,0 +1,108 @@
+{
+  "evals": [
+    {
+      "id": "eval-0-init-session",
+      "prompt": "Vamos a trabajar en implementar el módulo de autenticación de usuarios.",
+      "expectations": [
+        "Creates doc/agents-sessions/ directory if it doesn't exist",
+        "Creates a session file with format YYYYMMDD-001-CLAUDE.md",
+        "Session file contains initial metadata (agent name, date, start time)",
+        "Session file contains an objective about user authentication",
+        "Informs user about session documentation location",
+        "Response is brief and doesn't overwhelm with documentation details"
+      ]
+    },
+    {
+      "id": "eval-1-document-work",
+      "prompt": "He implementado la función de login con JWT. Los archivos modificados son src/auth/login.js y src/middleware/auth.js. He decidido usar JWT en lugar de sessions por escalabilidad.",
+      "expectations": [
+        "Updates existing session file (doesn't create new one)",
+        "Adds new work section with timestamp",
+        "Documents modified files: src/auth/login.js and src/middleware/auth.js",
+        "Records technical decision about JWT vs sessions",
+        "Includes the scalability reasoning",
+        "Updates 'Hora de últimos trabajos' in metadata",
+        "Doesn't rewrite entire file, only adds incremental update"
+      ]
+    },
+    {
+      "id": "eval-2-request-summary",
+      "prompt": "¿Qué hemos hecho hasta ahora en esta sesión?",
+      "expectations": [
+        "Reads current session file",
+        "Provides executive summary of work done",
+        "Lists completed objectives",
+        "Shows time invested",
+        "References session file location",
+        "Summary is concise (not full session dump)"
+      ]
+    },
+    {
+      "id": "eval-3-close-session",
+      "prompt": "Cierra la sesión. La próxima vez voy a trabajar en la integración con el frontend.",
+      "expectations": [
+        "Updates session file with final state",
+        "Adds metrics (duration, files modified, etc.)",
+        "Adds 'Próximos Pasos' section with frontend integration",
+        "Sets 'Estado final' to 'Completada'",
+        "Adds 'Próxima sesión' note about frontend work",
+        "Confirms session closure to user"
+      ]
+    },
+    {
+      "id": "eval-4-multiple-sessions-same-day",
+      "prompt": "Nueva sesión: voy a trabajar en optimizar la base de datos.",
+      "files": [
+        {
+          "path": "doc/agents-sessions/20260209-001-CLAUDE.md",
+          "content": "# Sesión Agente: 20260209-001-CLAUDE\n\n* **Agente de IA:** Claude (Sonnet 4.5)\n* **Fecha creación:** 9 de febrero de 2026\n* **Hora de inicio:** 14:15\n* **Hora de últimos trabajos:** 16:42\n\n---\n\n## Estado final: Completada"
+        }
+      ],
+      "expectations": [
+        "Detects existing session from same day (001)",
+        "Creates new session file: 20260209-002-CLAUDE.md",
+        "New session has correct incremental number (002)",
+        "New session has fresh metadata",
+        "New session has objective about database optimization",
+        "Doesn't modify previous session file (001)"
+      ]
+    },
+    {
+      "id": "eval-5-concise-mode",
+      "prompt": "He añadido un índice a la tabla users. Usa modo conciso para documentar.",
+      "expectations": [
+        "Documents the change in 2-3 lines maximum",
+        "Includes file modified (implied database migration or similar)",
+        "Includes basic result (index added)",
+        "Doesn't include extensive metrics or details",
+        "Timestamp is present",
+        "Updates last work time"
+      ]
+    },
+    {
+      "id": "eval-6-detailed-mode",
+      "prompt": "Implementé un sistema de caché Redis completo. Usa modo detallado para documentar esto.",
+      "expectations": [
+        "Creates detailed documentation section",
+        "Includes comprehensive description of Redis cache implementation",
+        "Documents architectural decisions with alternatives considered",
+        "Includes code snippets or references if relevant",
+        "Documents all modified/created files",
+        "Includes detailed metrics (lines added/removed, performance impact)",
+        "Explains WHY Redis was chosen (tradeoffs)"
+      ]
+    },
+    {
+      "id": "eval-7-error-recovery",
+      "prompt": "Encontré un bug crítico en la autenticación. Lo resolví cambiando la validación de tokens. Documenta esto como problema resuelto.",
+      "expectations": [
+        "Creates section in 'Problemas Encontrados' or similar",
+        "Documents WHAT the bug was (critical auth issue)",
+        "Documents HOW it was solved (token validation change)",
+        "Includes prevention/learning if applicable",
+        "Marks this as important (⚠️ or similar indicator)",
+        "References files modified for the fix"
+      ]
+    }
+  ]
+}
