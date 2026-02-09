@@ -225,8 +225,17 @@ MIT License - Ver LICENSE para detalles
 ---
 
 **Creado por:** Adrián (IPGSoft)  
-**Versión:** 1.0.1 (mejorado testing + especificación idioma)  
+**Versión:** 1.0.2 (mejoras globales completas)  
 **Última actualización:** 9 de febrero de 2026
+
+## 🆕 Cambios en v1.0.2
+
+- ✅ **Idioma verificado en TODOS los evals** (8/8)
+- ✅ **Criterios medibles** en lugar de subjetivos (eval-1, 2, 5, 6)
+- ✅ **Verificación de calidad** vs solo existencia (eval-1, 3, 4)
+- ✅ **+7 assertions nuevas, 11 mejoradas** (52 → 59 total)
+
+Ver [MEJORAS-v1.0.2.md](MEJORAS-v1.0.2.md) para detalles completos.
 
 ## 🆕 Cambios en v1.0.1
 
@@ -235,5 +244,5 @@ MIT License - Ver LICENSE para detalles
 - ✅ Especificación explícita: **todo en Español de España**
 - ✅ Verificación de estructura completa de secciones
 
-Ver [CHANGELOG.md](CHANGELOG.md) para detalles completos.
+Ver [CAMBIOS.md](CAMBIOS.md) para detalles de v1.0.1.
 

@@ -21,10 +21,11 @@
         "Updates existing session file (doesn't create new one)",
         "Adds new work section with timestamp",
         "Documents modified files: src/auth/login.js and src/middleware/auth.js",
-        "Records technical decision about JWT vs sessions",
-        "Includes the scalability reasoning",
+        "Records technical decision about JWT vs sessions with reasoning and alternatives considered (not just a statement)",
+        "Includes the scalability reasoning with specific benefits explained",
         "Updates 'Hora de \u00faltimos trabajos' in metadata",
-        "Doesn't rewrite entire file, only adds incremental update"
+        "Doesn't rewrite entire file, only adds incremental update",
+        "Content uses Spanish (Spain) language"
       ]
     },
     {
@@ -32,11 +33,12 @@
       "prompt": "\u00bfQu\u00e9 hemos hecho hasta ahora en esta sesi\u00f3n?",
       "assertions": [
         "Reads current session file",
-        "Provides executive summary of work done",
+        "Summary includes specific tasks completed with concrete details (not generic statements)",
         "Lists completed objectives",
         "Shows time invested",
         "References session file location",
-        "Summary is concise (not full session dump)"
+        "Summary is concise (under 500 characters total)",
+        "Content uses Spanish (Spain) language"
       ]
     },
     {
@@ -44,11 +46,12 @@
       "prompt": "Cierra la sesi\u00f3n. La pr\u00f3xima vez voy a trabajar en la integraci\u00f3n con el frontend.",
       "assertions": [
         "Updates session file with final state",
-        "Adds metrics (duration, files modified, etc.)",
+        "Adds metrics with calculated values (duration, files modified, etc.) not placeholders",
         "Adds 'Pr\u00f3ximos Pasos' section with frontend integration",
         "Sets 'Estado final' to 'Completada'",
         "Adds 'Pr\u00f3xima sesi\u00f3n' note about frontend work",
-        "Confirms session closure to user"
+        "Confirms session closure to user",
+        "Content uses Spanish (Spain) language"
       ]
     },
     {
@@ -64,9 +67,10 @@
         "Detects existing session from same day (001)",
         "Creates new session file: 20260209-002-CLAUDE.md",
         "New session has correct incremental number (002)",
-        "New session has fresh metadata",
-        "New session has objective about database optimization",
-        "Doesn't modify previous session file (001)"
+        "New session has fresh metadata with current date and time",
+        "New session has specific objective about database optimization (not just placeholder text)",
+        "Doesn't modify previous session file (001)",
+        "Content uses Spanish (Spain) language"
       ]
     },
     {
@@ -76,9 +80,10 @@
         "Documents the change in 2-3 lines maximum",
         "Includes file modified (implied database migration or similar)",
         "Includes basic result (index added)",
-        "Doesn't include extensive metrics or details",
+        "Documentation is under 5 lines total (excludes extensive metrics or architectural details)",
         "Timestamp is present",
-        "Updates last work time"
+        "Updates last work time",
+        "Content uses Spanish (Spain) language"
       ]
     },
     {
@@ -86,12 +91,13 @@
       "prompt": "Implement\u00e9 un sistema de cach\u00e9 Redis completo. Usa modo detallado para documentar esto.",
       "assertions": [
         "Creates detailed documentation section",
-        "Includes comprehensive description of Redis cache implementation",
-        "Documents architectural decisions with alternatives considered",
+        "Description includes at least: what was implemented, why it was needed, how it works, and tradeoffs considered",
+        "Documents architectural decisions with alternatives considered and reasoning for chosen approach",
         "Includes code snippets or references if relevant",
         "Documents all modified/created files",
         "Includes detailed metrics (lines added/removed, performance impact)",
-        "Explains WHY Redis was chosen (tradeoffs)"
+        "Explains WHY Redis was chosen with specific tradeoffs over alternatives",
+        "Content uses Spanish (Spain) language"
       ]
     },
     {
@@ -103,7 +109,8 @@
         "Documents HOW it was solved (token validation change)",
         "Includes prevention/learning if applicable",
         "Marks this as important (\u26a0\ufe0f or similar indicator)",
-        "References files modified for the fix"
+        "References files modified for the fix",
+        "Content uses Spanish (Spain) language"
       ]
     }
   ]
