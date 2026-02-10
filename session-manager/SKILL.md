@@ -11,23 +11,98 @@ Skill para gestionar sesiones de trabajo con agentes IA, manteniendo documentaci
 
 Este skill permite que los agentes IA documenten automáticamente su trabajo durante las sesiones de desarrollo, manteniendo un historial completo que sobrevive a las compactaciones de contexto y sirve como fuente de verdad para generar releases.
 
-## Cuándo usar este skill
+## Principios Fundamentales (CRÍTICO)
 
-- Al inicio de cada nueva sesión de trabajo
-- Durante el desarrollo cuando se completan tareas significativas
-- Al finalizar una sesión de trabajo
-- Cuando el usuario solicita explícitamente documentar el progreso
+### 1. Proactividad Obligatoria
 
-## Idioma y localización
+**El agente DEBE documentar automáticamente, SIN que el usuario lo solicite**, cuando se realice trabajo significativo.
+
+**Criterios detallados:** [`references/when-to-document.md`](references/when-to-document.md)
+
+**Contraejemplos:** [`references/when-not-to-document.md`](references/when-not-to-document.md)
+
+**Ejemplo completo:** [`references/example-proactive-implementation.md`](references/example-proactive-implementation.md)
+
+**Comportamiento esperado:**
+```
+Usuario: "Implementa login con JWT"
+↓
+Agente: 
+1. Implementa funcionalidad
+2. DOCUMENTA AUTOMÁTICAMENTE (sin esperar instrucción)
+3. Responde: "✓ Login implementado y documentado en sesión"
+```
+
+### 2. Atomicidad y No Duplicación
+
+**ANTES de documentar, el agente DEBE:**
+1. Leer físicamente el archivo de sesión actual
+2. Verificar si la información ya está documentada
+3. Decidir: Si YA existe → Informar | Si NO → Documentar | Si parcial → Complementar
+
+**Principio completo:** [`references/source-of-truth-principle.md`](references/source-of-truth-principle.md)
+
+**Ejemplos:**
+- Evitar duplicación: [`references/example-avoid-duplication.md`](references/example-avoid-duplication.md)
+- Complementar parcial: [`references/example-complement-partial.md`](references/example-complement-partial.md)
+
+**Comportamiento esperado:**
+```
+Usuario: "Implementé login con JWT" 
+↓
+Agente:
+1. LEE doc/agents-sessions/YYYYMMDD-XXX-CLAUDE.md
+2. BUSCA si JWT/login ya documentado
+3. Si SÍ → "Ya documentado en sesión (sección 14:23)"
+   Si NO → Documenta
+```
+
+### 3. Fuente de Verdad Única
+
+**El documento de sesión es la autoridad definitiva** sobre qué se ha hecho, qué decisiones se tomaron y por qué.
+
+**Contexto conversacional:** Volátil, puede estar desactualizado, se pierde con compactaciones.
+
+**Regla de oro:** En caso de contradicción, el documento prevalece sobre la memoria conversacional.
+
+**Detalles:** [`references/source-of-truth-principle.md`](references/source-of-truth-principle.md)
+
+### 4. Comportamiento Reactivo
+
+Aunque proactivo es el core, el agente DEBE responder a instrucciones explícitas:
+
+```
+Usuario: "Anota que tenemos pendiente refactorizar X"
+→ Agente verifica atomicidad y documenta en "Próximos Pasos"
+```
+
+**Ejemplo completo:** [`references/example-reactive-instruction.md`](references/example-reactive-instruction.md)
+
+### 5. Consultas Informativas
+
+**NO documentar** cuando el usuario solo pregunta sobre decisiones pasadas:
+
+```
+Usuario: "¿Por qué usamos JWT?"
+→ Agente consulta sesión, responde, NO documenta la pregunta
+```
+
+**Ejemplo completo:** [`references/example-informational-query.md`](references/example-informational-query.md)
+
+---
+
+## Idioma y Localización
 
 **IMPORTANTE:** Toda la documentación debe generarse en **Español de España**.
 
-- Fechas: Formato "DD de MMMM de YYYY" (ej: "9 de febrero de 2026")
-- Hora: Formato 24h "HH:MM" (ej: "14:30")
-- Vocabulario: Español de España (ej: "ordenador" no "computadora", "aplicación" no "app")
-- Meses: enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre
+- **Fechas:** "DD de MMMM de YYYY" (ej: "9 de febrero de 2026")
+- **Hora:** Formato 24h "HH:MM" (ej: "14:30")
+- **Vocabulario:** Español de España (ej: "ordenador" no "computadora")
+- **Meses:** enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre
 
-## Estructura de archivos
+---
+
+## Estructura de Archivos
 
 ```
 doc/
@@ -38,325 +113,145 @@ doc/
     └── ...
 ```
 
-## Formato del archivo de sesión
-
-Cada archivo sigue esta estructura:
-
-```markdown
-# Sesión Agente: YYYYMMDD-XXX-{agent-alias}
-
-* **Agente de IA:** [Nombre del agente]
-* **Fecha creación:** [DD de MMMM de YYYY]
-* **Hora de inicio:** [HH:MM]
-* **Hora de últimos trabajos:** [HH:MM]
+**Template completo:** [`assets/templates/session-file-template.md`](assets/templates/session-file-template.md)
 
 ---
 
-## 📋 Resumen de la Sesión
+## Comportamiento del Skill
 
-[Breve descripción de los objetivos y contexto de la sesión]
+### 1. Detección Automática de Nueva Sesión
 
----
+Al inicio de conversación:
 
-## 🎯 Objetivos
+1. Verificar si existe `doc/agents-sessions/`
+   - Si NO → Crear directorio + `changelog-sessions.md`
+2. Determinar número de sesión: Listar archivos `YYYYMMDD-*-CLAUDE.md`, incrementar contador
+3. Crear archivo: `YYYYMMDD-XXX-CLAUDE.md` con metadata inicial
+4. Informar discretamente: "Sesión documentada en `doc/agents-sessions/20260209-001-CLAUDE.md`"
 
-- [ ] Objetivo 1
-- [ ] Objetivo 2
-- [ ] Objetivo 3
+### 2. Actualización Durante la Sesión (PROACTIVA)
 
----
+**El agente documenta AUTOMÁTICAMENTE cuando:**
+- Se complete tarea significativa (ver [`references/when-to-document.md`](references/when-to-document.md))
+- Se tome decisión técnica con alternativas
+- Se modifiquen archivos que afecten lógica de negocio
 
-## 💼 Trabajo Realizado
-
-### [HH:MM] - [Título de la tarea]
-
-**Descripción:**
-[Descripción detallada de qué se hizo]
-
-**Archivos modificados:**
-- `path/to/file1.ext` - [Descripción del cambio]
-- `path/to/file2.ext` - [Descripción del cambio]
-
-**Decisiones técnicas:**
-- [Decisión 1 y su justificación]
-- [Decisión 2 y su justificación]
-
-**Resultados:**
-- ✅ [Resultado positivo 1]
-- ✅ [Resultado positivo 2]
-- ⚠️ [Advertencia o nota si aplica]
-
----
-
-### [HH:MM] - [Siguiente tarea]
-
-[Repetir estructura para cada tarea completada]
-
----
-
-## 🔄 Próximos Pasos
-
-- [ ] Tarea pendiente 1
-- [ ] Tarea pendiente 2
-- [ ] Idea para explorar 1
-
----
-
-## 📝 Notas y Aprendizajes
-
-### Lecciones Técnicas
-
-- [Aprendizaje 1]
-- [Aprendizaje 2]
-
-### Decisiones Arquitectónicas
-
-- [Decisión 1 con contexto y alternativas consideradas]
-
-### Problemas Encontrados
-
-**[Problema 1]:**
-- **Descripción:** [Qué pasó]
-- **Solución:** [Cómo se resolvió]
-- **Prevención:** [Cómo evitarlo en el futuro]
-
----
-
-## 📊 Métricas de la Sesión
-
-- **Duración total:** [X horas Y minutos]
-- **Archivos modificados:** [N]
-- **Archivos creados:** [N]
-- **Commits realizados:** [N]
-- **Tests creados/modificados:** [N]
-- **Líneas añadidas:** ~[N]
-- **Líneas eliminadas:** ~[N]
-
----
-
-## 🔗 Referencias
-
-- Commits: `hash1`, `hash2`, ...
-- Issues relacionados: #XX, #YY
-- Documentación consultada: [enlaces]
-- PRs relacionados: #XX
-
----
-
-**Estado final:** [Completada | En progreso | Pausada]
-**Próxima sesión:** [Descripción breve de qué continuar]
-```
-
-## Comportamiento del skill
-
-### 1. Detección automática de nueva sesión
-
-Al inicio de una conversación, el skill debe:
-
-1. **Verificar si existe directorio** `doc/agents-sessions/`
-   - Si NO existe: Crearlo y crear archivo `changelog-sessions.md`
-   - Si existe: Continuar
-
-2. **Determinar número de sesión del día:**
-   - Listar archivos con patrón `YYYYMMDD-*-{agent-alias}.md`
-   - Incrementar contador (001, 002, 003...)
-
-3. **Crear archivo de sesión:**
-   - Nombre: `YYYYMMDD-XXX-{agent-alias}.md`
-   - Rellenar metadata inicial (fecha, hora, agente)
-   - Inicializar estructura vacía
-
-4. **Informar al usuario discretamente:**
-   - "Sesión documentada en `doc/agents-sessions/20260209-001-CLAUDE.md`"
-
-### 2. Actualización durante la sesión
-
-Durante el trabajo, el skill debe actualizar el archivo cuando:
-
-- Se complete una tarea significativa
-- Se tome una decisión técnica importante
-- Se modifiquen/creen archivos relevantes
-- El usuario solicite documentar el progreso
+**ANTES de documentar:**
+1. Leer archivo de sesión
+2. Verificar atomicidad
+3. Si existe → No duplicar
+4. Si no existe → Documentar
+5. Si parcial → Complementar
 
 **Actualización incremental:**
-- NO reescribir todo el archivo
+- NO reescribir archivo completo
 - Añadir nueva sección con timestamp
 - Actualizar "Hora de últimos trabajos"
-- Marcar objetivos completados
 
-### 3. Cierre de sesión
+### 3. Cierre de Sesión
 
-Al finalizar o cuando el usuario lo solicite:
+Cuando el usuario lo solicite:
 
-1. **Actualizar métricas finales**
-2. **Completar sección "Próximos Pasos"**
-3. **Añadir estado final**
-4. **Confirmar al usuario:**
-   - "Sesión documentada y cerrada."
+1. Actualizar métricas finales
+2. Completar "Próximos Pasos"
+3. Añadir estado final: "Completada"
+4. Confirmar: "Sesión documentada y cerrada"
 
-## Niveles de detalle
+---
 
-El skill adapta el nivel de detalle según el contexto:
+## Niveles de Detalle
 
 ### Modo CONCISO (por defecto)
-- Resumen de 2-3 líneas por tarea
+- Resumen 2-3 líneas por tarea
 - Solo decisiones técnicas importantes
 - Métricas básicas
 
 ### Modo DETALLADO (cuando se solicita)
 - Descripción completa de cada paso
-- Todas las decisiones con alternativas consideradas
+- Todas decisiones con alternativas
 - Código relevante incluido
 - Métricas exhaustivas
 
 ### Modo MINIMAL (para tareas triviales)
 - Solo timestamp + título + resultado
-- Sin métricas
+- Sin métricas detalladas
 
-## Integración con otras herramientas
+---
 
-### Con CHANGELOG.md
-
-El archivo de sesión sirve como **fuente de verdad** para actualizar `CHANGELOG.md`:
-- Cada sesión genera un bloque en `Unreleased`
-- La información se resume pero vincula al archivo de sesión
-- NO duplicar información, solo referenciar
-
-### Con releases
-
-Al cerrar una versión:
-- Los archivos de sesión se usan para generar el release note detallado
-- El `CHANGELOG.md` se genera desde los archivos de sesión
-- Los archivos de sesión permanecen como historial
-
-## Reglas importantes
+## Reglas Importantes
 
 ### ✅ HACER
 
-- Documentar decisiones técnicas con su contexto
-- Mantener timestamps precisos
+- **Documentar PROACTIVAMENTE** sin esperar instrucción
+- **Verificar atomicidad** antes de documentar (leer sesión primero)
+- **Usar documento como fuente de verdad** (no confiar solo en contexto)
+- Documentar decisiones con contexto y alternativas consideradas
+- Mantener timestamps precisos (formato 24h)
 - Actualizar incrementalmente (no reescribir)
-- Usar lenguaje claro y específico
-- Incluir referencias (commits, files, issues)
-- Marcar tareas completadas vs pendientes
-- Separar trabajo realizado de próximos pasos
+- Usar lenguaje específico (no vago)
+- Incluir referencias (commits, archivos, issues)
+- Separar "Trabajo Realizado" de "Próximos Pasos"
 
 ### ❌ NO HACER
 
-- No reescribir el archivo completo en cada actualización
-- No incluir próximos pasos en secciones de trabajo realizado
-- No duplicar información entre archivo de sesión y CHANGELOG
+- **NO esperar** a que usuario diga "documenta esto"
+- **NO duplicar** información ya documentada
+- **NO confiar solo** en memoria conversacional
+- **NO documentar** consultas informativas del usuario
+- No reescribir archivo completo en actualizaciones
 - No usar lenguaje vago ("se mejoró", "se arregló")
-- No omitir decisiones técnicas importantes
-- No mezclar sesiones (una sesión = un archivo)
+- No asumir documentación sin verificar archivo físicamente
 
-## Ejemplos de uso
+---
 
-### Ejemplo 1: Inicio de sesión
+## Integración con Otras Herramientas
 
-**Usuario:** "Vamos a trabajar en el módulo de autenticación"
+### Con CHANGELOG.md
 
-**Skill:**
-1. Crea `doc/agents-sessions/20260209-001-CLAUDE.md`
-2. Rellena metadata
-3. Añade objetivo: "Implementar módulo de autenticación"
-4. Responde: "✓ Sesión iniciada y documentada en `doc/agents-sessions/20260209-001-CLAUDE.md`. ¿Por dónde empezamos?"
+El archivo de sesión sirve como **fuente de verdad** para `CHANGELOG.md`:
+- Cada sesión genera bloque en `Unreleased`
+- Información resumida vincula a archivo de sesión
+- NO duplicar, solo referenciar
 
-### Ejemplo 2: Durante el trabajo
+### Con Releases
 
-**Contexto:** El agente acaba de implementar login con JWT
+Al cerrar versión:
+- Archivos de sesión → Release notes detallados
+- `CHANGELOG.md` se genera desde sesiones
+- Archivos permanecen como historial
 
-**Skill:**
-1. Actualiza archivo de sesión:
-   ```markdown
-   ### 14:23 - Implementación de Login con JWT
-   
-   **Descripción:**
-   Implementado sistema de autenticación usando JSON Web Tokens.
-   
-   **Archivos modificados:**
-   - `src/auth/login.js` - Nueva función `authenticateUser()`
-   - `src/middleware/auth.js` - Middleware de validación de tokens
-   
-   **Decisiones técnicas:**
-   - Usar JWT en lugar de sessions por escalabilidad
-   - Tokens expiran en 24h por seguridad
-   - RefreshTokens almacenados en DB para revocación
-   
-   **Resultados:**
-   - ✅ Login funcional con tokens
-   - ✅ Middleware de protección de rutas
-   - ✅ Tests unitarios pasando (12/12)
-   ```
+---
 
-2. NO interrumpe el flujo de trabajo
-3. Solo menciona si el usuario pregunta por el progreso
+## Ejemplos Completos
 
-### Ejemplo 3: Usuario solicita resumen
+Todos los ejemplos están en [`references/`](references/):
 
-**Usuario:** "¿Qué hemos hecho hasta ahora?"
+1. **Proactividad:** [`example-proactive-implementation.md`](references/example-proactive-implementation.md)
+2. **Atomicidad:** [`example-avoid-duplication.md`](references/example-avoid-duplication.md)
+3. **Complementar:** [`example-complement-partial.md`](references/example-complement-partial.md)
+4. **Consultas:** [`example-informational-query.md`](references/example-informational-query.md)
+5. **Reactivo:** [`example-reactive-instruction.md`](references/example-reactive-instruction.md)
 
-**Skill:**
-1. Lee el archivo de sesión actual
-2. Genera resumen ejecutivo:
-   ```
-   Resumen de sesión 20260209-001-CLAUDE (2h 15min):
-   
-   ✅ Completado:
-   - Sistema de autenticación JWT
-   - Middleware de protección de rutas
-   - 12 tests unitarios
-   
-   📝 En progreso:
-   - Integración con frontend
-   
-   📂 Archivos: 8 modificados, 3 creados
-   
-   Documentación completa: doc/agents-sessions/20260209-001-CLAUDE.md
-   ```
-
-## Inicialización de sistema
-
-Si el usuario está comenzando a usar este sistema por primera vez:
-
-1. **Crear estructura de directorios:**
-   ```
-   mkdir -p doc/agents-sessions
-   mkdir -p doc/releases
-   ```
-
-2. **Crear `changelog-sessions.md`:**
-   ```markdown
-   # Changelog de Sesiones
-   
-   Historial detallado de todas las sesiones de trabajo con agentes IA.
-   
-   ## Formato
-   
-   Cada entrada representa una sesión completa de trabajo.
-   
-   ---
-   
-   [Las sesiones se irán añadiendo aquí al cerrar versiones]
-   ```
-
-3. **Verificar existencia de `CHANGELOG.md`:**
-   - Si no existe, crearlo con estructura estándar
-   - Si existe, respetar su contenido actual
+---
 
 ## Personalización
 
-El skill puede adaptarse según preferencias del usuario:
+El skill puede adaptarse según preferencias:
 
-- **Alias del agente:** Por defecto "CLAUDE", pero configurable
+- **Alias del agente:** Por defecto "CLAUDE", configurable
 - **Nivel de detalle:** Conciso | Detallado | Minimal
-- **Frecuencia de actualización:** Automática | Manual | Milestones
-- **Idioma:** Español (default) | Inglés | Bilingüe
+- **Idioma:** Español (default) | Inglés
 
 ---
 
 ## Conclusión
 
-Este skill permite mantener una trazabilidad completa del trabajo realizado con agentes IA, asegurando que ninguna información se pierda en compactaciones de contexto y facilitando la generación de documentación de releases de alta calidad.
+Este skill mantiene trazabilidad completa del trabajo, asegurando que ninguna información se pierda en compactaciones de contexto.
 
-**Principio fundamental:** La documentación se genera automáticamente durante el trabajo, no como tarea posterior.
+**Principios clave:**
+
+1. **Proactividad:** Documentación AUTOMÁTICA durante el trabajo
+2. **Atomicidad:** SIEMPRE verificar antes de documentar
+3. **Fuente de Verdad:** Documento > contexto conversacional
+
+**Resultado:** Cada sesión se convierte en registro permanente, verificable y completo del desarrollo, eliminando documentación manual posterior y preservando conocimiento ante compactaciones de contexto.

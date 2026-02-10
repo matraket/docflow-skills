@@ -225,24 +225,147 @@ MIT License - Ver LICENSE para detalles
 ---
 
 **Creado por:** Adrián (IPGSoft)  
-**Versión:** 1.0.2 (mejoras globales completas)  
+**Versión:** 1.3.0-modular (estructura assets/)  
 **Última actualización:** 9 de febrero de 2026
+
+## 🎯 Skill Session Manager
+
+Sistema proactivo de documentación automática de sesiones de trabajo con agentes IA.
+
+**Core:** SKILL.md reducido a **257 líneas (~1300 tokens)** - Reducción del **75%**
+
+**Estructura modular:** Ejemplos y referencias en `assets/` para carga bajo demanda.
+
+---
+
+## 📁 Estructura
+
+```
+session-manager/
+├── SKILL.md                    (257 líneas - core esencial)
+├── README.md
+├── evals/
+│   └── evals.json
+├── assets/                     (recursos estáticos)
+│   └── templates/
+│       └── session-file-template.md
+└── references/                 (documentación de referencia)
+    ├── when-to-document.md
+    ├── when-not-to-document.md
+    ├── source-of-truth-principle.md
+    ├── example-proactive-implementation.md
+    ├── example-avoid-duplication.md
+    ├── example-complement-partial.md
+    ├── example-informational-query.md
+    └── example-reactive-instruction.md
+```
+
+**Cumple con:** [agentskills.io](https://agentskills.io) especificaciones oficiales
+
+---
+
+## 🆕 Cambios en v1.3.0-modular
+
+**Refactorización mayor con estructura según agentskills.io:**
+
+- ✅ **SKILL.md reducido:** 594 → 257 líneas (-57%), 5275 → 1300 tokens (-75%)
+- ✅ **Estructura oficial:** Cumple con especificaciones de agentskills.io
+- ✅ **references/** al nivel raíz con ejemplos y criterios
+- ✅ **assets/** solo para recursos estáticos (templates)
+- ✅ **Carga bajo demanda:** Claude solo lee lo que necesita
+- ✅ **Mantenibilidad:** Archivos pequeños y específicos
+
+Ver [REORGANIZACION-AGENTSKILLS.md](doc/REORGANIZACION-AGENTSKILLS.md) para detalles.
+
+---
+
+## 🆕 Cambios en v1.3.0 (behavioral)
+
+**Transformación fundamental: De reactivo a proactivo**
+
+- ✅ **Nueva sección:** "Principios de Documentación (CRÍTICO)" (ahora en SKILL.md core)
+- ✅ **Proactividad obligatoria:** Agente documenta automáticamente SIN instrucción explícita
+- ✅ **Atomicidad garantizada:** Siempre verifica archivo antes de documentar
+- ✅ **Fuente de verdad:** Documento de sesión > contexto conversacional
+- ✅ **Criterios concretos:** 17 criterios explícitos (ahora en assets/references/)
+
+Ver [CAMBIOS-v1.3.0.md](doc/CAMBIOS-v1.3.0.md) para detalles de comportamiento.
+
+---
 
 ## 🆕 Cambios en v1.0.2
 
 - ✅ **Idioma verificado en TODOS los evals** (8/8)
-- ✅ **Criterios medibles** en lugar de subjetivos (eval-1, 2, 5, 6)
-- ✅ **Verificación de calidad** vs solo existencia (eval-1, 3, 4)
+- ✅ **Criterios medibles** en lugar de subjetivos
+- ✅ **Verificación de calidad** vs solo existencia
 - ✅ **+7 assertions nuevas, 11 mejoradas** (52 → 59 total)
 
-Ver [MEJORAS-v1.0.2.md](MEJORAS-v1.0.2.md) para detalles completos.
+Ver [CAMBIOS-v1.0.2.md](doc/CAMBIOS-v1.0.2.md) para detalles completos.
+
+---
 
 ## 🆕 Cambios en v1.0.1
 
-- ✅ Assertions mejoradas: verifican calidad de contenido, no solo existencia
-- ✅ Criterio "brief" ahora es concreto: <200 caracteres
+- ✅ Assertions mejoradas: verifican calidad, no solo existencia
+- ✅ Criterio "brief" ahora concreto: <200 caracteres
 - ✅ Especificación explícita: **todo en Español de España**
 - ✅ Verificación de estructura completa de secciones
 
-Ver [CAMBIOS.md](CAMBIOS.md) para detalles de v1.0.1.
+Ver [CAMBIOS-v1.0.1.md](doc/CAMBIOS-v1.0.1.md) para detalles de v1.0.1.
+
+---
+
+## 📖 Cómo Usar
+
+### Para Claude (agentes IA)
+
+1. **Lee SKILL.md** (~1300 tokens, principios core)
+2. **Si necesita ejemplos:** Lee `references/example-*.md`
+3. **Si necesita criterios:** Lee `references/when-*.md` o `references/source-of-truth-principle.md`
+4. **Si necesita template:** Lee `assets/templates/session-file-template.md`
+
+### Para Desarrolladores
+
+**Leer documentación:**
+- Empezar por `SKILL.md` para entender el sistema
+- Consultar `references/example-*.md` para casos de uso específicos
+- Consultar `references/when-*.md` para criterios detallados
+
+**Extender skill:**
+- Añadir ejemplo: Crear archivo en `references/example-*.md`
+- Añadir criterio: Editar archivos en `references/`
+- SKILL.md permanece estable (~257 líneas)
+
+---
+
+## 🎯 Principios Fundamentales
+
+1. **Proactividad:** Documenta automáticamente durante el trabajo
+2. **Atomicidad:** Verifica antes de documentar (no duplica)
+3. **Fuente de Verdad:** Documento de sesión es autoridad definitiva
+
+**Detalles:** Ver `SKILL.md` sección "Principios Fundamentales"
+
+---
+
+## 📊 Estadísticas
+
+| Métrica | v1.0.0 | v1.3.0 Original | v1.3.0 Modular |
+|---------|--------|-----------------|----------------|
+| Líneas SKILL.md | 363 | 594 | **257** |
+| Tokens SKILL.md | ~2800 | ~5275 | **~1300** |
+| Ejemplos | 3 | 7 | 5 (en assets/) |
+| Referencias | 0 | 0 | 3 (en assets/) |
+| Extensibilidad | Baja | Baja | **Alta** |
+
+---
+
+## 🔗 Documentación
+
+- **SKILL.md** - Instrucciones core para Claude
+- **REORGANIZACION-AGENTSKILLS.md** - Cumplimiento de especificaciones oficiales
+- **REFACTORIZACION-v1.3.0.md** - Análisis de estructura modular
+- **CAMBIOS-v1.3.0.md** - Cambios de comportamiento proactivo
+- **references/** - Ejemplos completos y criterios detallados
+- **assets/templates/** - Templates de archivos de sesión
 
