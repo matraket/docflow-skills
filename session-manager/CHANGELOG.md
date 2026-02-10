@@ -298,7 +298,7 @@ session-manager-v1.3.0/
 ├── SKILL.md                    ← MODIFICADO (363 → 602 líneas)
 ├── README.md                   → Actualizar versión
 ├── evals/
-│   └── evals.json             → Añadir eval-8 a eval-12
+│   └── evals.json              → Añadir eval-8 a eval-12
 └── CAMBIOS.md                  → Este documento
 ```
 
@@ -666,7 +666,7 @@ Se han realizado mejoras al skill `session-manager` basadas en el feedback del e
 
 ## 🔧 Cambios Realizados
 
-### 1. Assertions Mejoradas en `evals.json`
+### 1. Assertions Mejoradas en `evals/evals.json`
 
 **Antes:**
 ```json

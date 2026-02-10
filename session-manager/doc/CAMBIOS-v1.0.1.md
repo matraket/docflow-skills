@@ -8,7 +8,7 @@ Se han realizado mejoras al skill `session-manager` basadas en el feedback del e
 
 ## 🔧 Cambios Realizados
 
-### 1. Assertions Mejoradas en `evals.json`
+### 1. Assertions Mejoradas en `evals/evals.json`
 
 **Antes:**
 ```json

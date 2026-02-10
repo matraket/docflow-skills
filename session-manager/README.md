@@ -4,13 +4,13 @@ Skill para gestionar sesiones de trabajo con agentes IA, documentando automátic
 
 ## 🎯 Propósito
 
-Permite que agentes IA documenten automáticamente su trabajo durante las sesiones de desarrollo, generando archivos de sesión detallados que sirven como fuente de verdad para:
+Permite que agentes IA documenten automáticamente su trabajo durante las sesiones de desarrollo, manteniendo un historial completo que:
 
-- Mantener contexto entre compactaciones
-- Generar CHANGELOGs automáticamente
-- Crear release notes de calidad
-- Auditar trabajo realizado
-- Facilitar handoffs entre sesiones
+- **Preserva contexto** ante compactaciones de memoria
+- **Registra decisiones técnicas** con reasoning y alternativas consideradas
+- **Documenta trabajo realizado** de forma incremental y proactiva
+- **Sirve como fuente de verdad** para auditoría del proyecto
+- **Facilita handoffs** entre sesiones y colaboradores
 
 ## 📦 Instalación
 
@@ -176,16 +176,6 @@ Toda la documentación se genera en español peninsular:
 
 No configurable - es un estándar del sistema de documentación.
 
-## 🔄 Integración con CHANGELOG
-
-Los archivos de sesión sirven como fuente para actualizar `CHANGELOG.md`:
-
-1. **Durante desarrollo:** Cada sesión genera entrada en `Unreleased`
-2. **Al cerrar versión:** Se consolida en bloque versionado
-3. **Información detallada:** Permanece en archivos de sesión
-
-Ver: [changelog-updater skill](../changelog-updater/) para automatizar esto.
-
 ## 🎯 Casos de uso
 
 ### 1. Desarrollo en múltiples sesiones
@@ -213,10 +203,6 @@ Al cerrar versión 1.0.1, se consolidan todas las sesiones en documentación de 
 ## 🤝 Contribuir
 
 Este skill es parte de un sistema de documentación automática para desarrollo asistido por IA.
-
-**Skills relacionados:**
-- `changelog-updater`: Mantiene CHANGELOG.md actualizado
-- `release-generator`: Genera notas de release desde sesiones
 
 ## 📝 Licencia
 
