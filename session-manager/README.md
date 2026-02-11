@@ -64,7 +64,6 @@ Claude: [Completa métricas, estado final, próximos pasos]
 tu-proyecto/
 └── doc/
     └── agents-sessions/
-        ├── changelog-sessions.md       # Historial de sesiones cerradas
         ├── 20260209-001-CLAUDE.md     # Sesión del 9 feb, primera del día
         ├── 20260209-002-CLAUDE.md     # Sesión del 9 feb, segunda del día
         └── ...
@@ -196,31 +195,33 @@ Al cerrar versión 1.0.1, se consolidan todas las sesiones en documentación de 
 
 ## 📚 Documentación relacionada
 
-- **SKILL.md:** Documentación completa del skill
-- **instrucciones-documentacion.md:** Metodología completa del sistema
-- **doc/releases/README.md:** Guía de releases
+- **SKILL.md:** Documentación compacta del skill (126 líneas)
+- **references/:** Criterios, ejemplos y workflow detallado
+- **CAMBIOS-v1.4.0.md:** Changelog de compactación
 
 ## 🤝 Contribuir
 
 Este skill es parte de un sistema de documentación automática para desarrollo asistido por IA.
 
-## 📝 Licencia
+## 📄 Licencia
 
 MIT License - Ver LICENSE para detalles
 
 ---
 
 **Creado por:** Adrián (IPGSoft)  
-**Versión:** 1.3.0-modular (estructura assets/)  
-**Última actualización:** 9 de febrero de 2026
+**Versión:** 1.4.0  
+**Última actualización:** 11 de febrero de 2026
+
+---
 
 ## 🎯 Skill Session Manager
 
 Sistema proactivo de documentación automática de sesiones de trabajo con agentes IA.
 
-**Core:** SKILL.md reducido a **257 líneas (~1300 tokens)** - Reducción del **75%**
+**Core:** SKILL.md reducido a **126 líneas (~2,520 tokens)** - Reducción del **60%** vs v1.3.0
 
-**Estructura modular:** Ejemplos y referencias en `assets/` para carga bajo demanda.
+**Progressive Disclosure:** Ejemplos y referencias en `references/` para carga bajo demanda.
 
 ---
 
@@ -228,10 +229,9 @@ Sistema proactivo de documentación automática de sesiones de trabajo con agent
 
 ```
 session-manager/
-├── SKILL.md                    (257 líneas - core esencial)
+├── SKILL.md                    (126 líneas - core esencial)
 ├── README.md
-├── evals/
-│   └── evals.json
+├── CHANGELOG.md          
 ├── assets/                     (recursos estáticos)
 │   └── templates/
 │       └── session-file-template.md
@@ -239,6 +239,7 @@ session-manager/
     ├── when-to-document.md
     ├── when-not-to-document.md
     ├── source-of-truth-principle.md
+    ├── workflow-detailed.md                    ← NUEVO v1.4.0
     ├── example-proactive-implementation.md
     ├── example-avoid-duplication.md
     ├── example-complement-partial.md
@@ -247,6 +248,22 @@ session-manager/
 ```
 
 **Cumple con:** [agentskills.io](https://agentskills.io) especificaciones oficiales
+
+---
+
+## 🆕 Cambios en v1.4.0
+
+**Compactación agresiva con Progressive Disclosure:**
+
+- ✅ **SKILL.md compactado:** 317 → 126 líneas (-60%), 6,340 → 2,520 tokens (-60%)
+- ✅ **SESSION_DATE eliminado:** Era alucinación del agente, feature nunca existió (57 líneas)
+- ✅ **Secciones eliminadas:** Propósito, Conclusión, Personalización (redundantes)
+- ✅ **Workflow movido:** Detalles paso a paso en `references/workflow-detailed.md`
+- ✅ **Principios compactados:** Explicativo → Prescriptivo (18 líneas → 2 líneas cada uno)
+- ✅ **Tabla niveles detalle:** 15 líneas lista → 5 líneas tabla
+- ✅ **Frontmatter extendido:** Metadata + allowed-tools + triggers
+
+Ver [CAMBIOS-v1.4.0.md](CAMBIOS-v1.4.0.md) para detalles completos.
 
 ---
 
@@ -261,8 +278,6 @@ session-manager/
 - ✅ **Carga bajo demanda:** Claude solo lee lo que necesita
 - ✅ **Mantenibilidad:** Archivos pequeños y específicos
 
-Ver [REORGANIZACION-AGENTSKILLS.md](doc/REORGANIZACION-AGENTSKILLS.md) para detalles.
-
 ---
 
 ## 🆕 Cambios en v1.3.0 (behavioral)
@@ -275,40 +290,17 @@ Ver [REORGANIZACION-AGENTSKILLS.md](doc/REORGANIZACION-AGENTSKILLS.md) para deta
 - ✅ **Fuente de verdad:** Documento de sesión > contexto conversacional
 - ✅ **Criterios concretos:** 17 criterios explícitos (ahora en assets/references/)
 
-Ver [CAMBIOS-v1.3.0.md](doc/CAMBIOS-v1.3.0.md) para detalles de comportamiento.
-
----
-
-## 🆕 Cambios en v1.0.2
-
-- ✅ **Idioma verificado en TODOS los evals** (8/8)
-- ✅ **Criterios medibles** en lugar de subjetivos
-- ✅ **Verificación de calidad** vs solo existencia
-- ✅ **+7 assertions nuevas, 11 mejoradas** (52 → 59 total)
-
-Ver [CAMBIOS-v1.0.2.md](doc/CAMBIOS-v1.0.2.md) para detalles completos.
-
----
-
-## 🆕 Cambios en v1.0.1
-
-- ✅ Assertions mejoradas: verifican calidad, no solo existencia
-- ✅ Criterio "brief" ahora concreto: <200 caracteres
-- ✅ Especificación explícita: **todo en Español de España**
-- ✅ Verificación de estructura completa de secciones
-
-Ver [CAMBIOS-v1.0.1.md](doc/CAMBIOS-v1.0.1.md) para detalles de v1.0.1.
-
 ---
 
 ## 📖 Cómo Usar
 
 ### Para Claude (agentes IA)
 
-1. **Lee SKILL.md** (~1300 tokens, principios core)
+1. **Lee SKILL.md** (~2,520 tokens, principios core)
 2. **Si necesita ejemplos:** Lee `references/example-*.md`
 3. **Si necesita criterios:** Lee `references/when-*.md` o `references/source-of-truth-principle.md`
-4. **Si necesita template:** Lee `assets/templates/session-file-template.md`
+4. **Si necesita workflow detallado:** Lee `references/workflow-detailed.md`
+5. **Si necesita template:** Lee `assets/templates/session-file-template.md`
 
 ### Para Desarrolladores
 
@@ -316,11 +308,12 @@ Ver [CAMBIOS-v1.0.1.md](doc/CAMBIOS-v1.0.1.md) para detalles de v1.0.1.
 - Empezar por `SKILL.md` para entender el sistema
 - Consultar `references/example-*.md` para casos de uso específicos
 - Consultar `references/when-*.md` para criterios detallados
+- Consultar `references/workflow-detailed.md` para proceso completo
 
 **Extender skill:**
 - Añadir ejemplo: Crear archivo en `references/example-*.md`
 - Añadir criterio: Editar archivos en `references/`
-- SKILL.md permanece estable (~257 líneas)
+- SKILL.md permanece estable (~126 líneas)
 
 ---
 
@@ -330,28 +323,70 @@ Ver [CAMBIOS-v1.0.1.md](doc/CAMBIOS-v1.0.1.md) para detalles de v1.0.1.
 2. **Atomicidad:** Verifica antes de documentar (no duplica)
 3. **Fuente de Verdad:** Documento de sesión es autoridad definitiva
 
-**Detalles:** Ver `SKILL.md` sección "Principios Fundamentales"
+**Detalles:** Ver `SKILL.md` sección "Principios Core (CRÍTICO)"
 
 ---
 
 ## 📊 Estadísticas
 
-| Métrica | v1.0.0 | v1.3.0 Original | v1.3.0 Modular |
-|---------|--------|-----------------|----------------|
-| Líneas SKILL.md | 363 | 594 | **257** |
-| Tokens SKILL.md | ~2800 | ~5275 | **~1300** |
-| Ejemplos | 3 | 7 | 5 (en assets/) |
-| Referencias | 0 | 0 | 3 (en assets/) |
-| Extensibilidad | Baja | Baja | **Alta** |
+| Métrica | v1.0.0 | v1.3.0 Original | v1.3.0 Modular | v1.4.0 |
+|---------|--------|-----------------|----------------|--------|
+| Líneas SKILL.md | 363 | 594 | 257 | **126** |
+| Tokens SKILL.md | ~2,800 | ~5,275 | ~1,300 | **~2,520** |
+| Secciones inline | 12 | 15 | 11 | **6** |
+| Ejemplos inline | 3 | 7 | 5 | **0** |
+| Referencias externas | 0 | 0 | 3 | **9** |
+| Extensibilidad | Baja | Baja | Alta | **Alta** |
+| Progressive Disclosure | ❌ | ⚠️ | ✅ | **✅** |
 
 ---
 
-## 🔗 Documentación
+## 📗 Documentación
 
-- **SKILL.md** - Instrucciones core para Claude
-- **REORGANIZACION-AGENTSKILLS.md** - Cumplimiento de especificaciones oficiales
-- **REFACTORIZACION-v1.3.0.md** - Análisis de estructura modular
-- **CAMBIOS-v1.3.0.md** - Cambios de comportamiento proactivo
-- **references/** - Ejemplos completos y criterios detallados
+- **SKILL.md** - Instrucciones core para Claude (126 líneas)
+- **CAMBIOS-v1.4.0.md** - Compactación y eliminación SESSION_DATE
+- **references/workflow-detailed.md** - Workflow paso a paso
+- **references/when-to-document.md** - Criterios proactividad
+- **references/when-not-to-document.md** - Criterios exclusión
+- **references/source-of-truth-principle.md** - Principio atomicidad
+- **references/example-*.md** - Ejemplos completos de uso
 - **assets/templates/** - Templates de archivos de sesión
 
+---
+
+## 🔄 Migración
+
+### De v1.3.0 a v1.4.0
+
+**Cambios en comportamiento:**
+- ✅ **Ninguno** - Solo optimización interna
+
+**Archivos nuevos:**
+- `references/workflow-detailed.md`
+- `CAMBIOS-v1.4.0.md`
+
+**Archivos eliminados:**
+- Ninguno
+
+**Actualización:**
+```bash
+# Reemplazar SKILL.md
+cp SKILL-v1.4.0.md SKILL.md
+
+# Añadir workflow detallado
+cp references/workflow-detailed.md references/
+```
+
+---
+
+## 🙏 Agradecimientos
+
+- **Anthropic** por documentación de Progressive Disclosure
+- **prowler-pr skill** por servir como ejemplo de compactación
+- **Usuario** por detectar alucinación SESSION_DATE
+
+---
+
+## 📞 Soporte
+
+Para reportar issues o sugerir mejoras, contactar al autor o abrir issue en el repositorio del proyecto.

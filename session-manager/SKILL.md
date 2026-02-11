@@ -1,257 +1,125 @@
 ---
 name: session-manager
-description: Gestiona sesiones de trabajo con agentes IA. Crea y mantiene archivos de sesión en doc/agents-sessions/ con formato YYYYMMDD-XXX-{agent-alias}.md, documentando automáticamente el trabajo realizado durante cada interacción.
+description: >
+  Gestiona sesiones de trabajo con agentes IA. Documenta automáticamente 
+  trabajo significativo en doc/agents-sessions/ con formato YYYYMMDD-XXX-{agent}.md.
+  Trigger: documentar sesión, crear sesión, actualizar sesión, verificar atomicidad,
+  fuente de verdad, cierre de sesión, trabajo significativo completado.
+metadata:
+  author: adrianalbr
+  version: "1.3.0"
+  scope: [root]
+allowed-tools: Read, Edit, Write, Bash
 ---
 
 # Session Manager
 
-Skill para gestionar sesiones de trabajo con agentes IA, manteniendo documentación detallada y trazabilidad completa del trabajo realizado.
+Documenta automáticamente trabajo con agentes IA, preservando conocimiento ante compactaciones.
 
-## Propósito
+## Principios Core (CRÍTICO)
 
-Este skill permite que los agentes IA documenten automáticamente su trabajo durante las sesiones de desarrollo, manteniendo un historial completo que sobrevive a las compactaciones de contexto y sirve como fuente de verdad para generar releases.
+### 1. Proactividad (AUTOMÁTICA)
+Documentar cuando: trabajo significativo | decisión técnica | modificación lógica negocio  
+Ver: [`when-to-document.md`](references/when-to-document.md), [`example-proactive-implementation.md`](references/example-proactive-implementation.md)
 
-## Principios Fundamentales (CRÍTICO)
+### 2. Atomicidad (SIEMPRE)
+ANTES de documentar: Leer archivo → Buscar contenido → Decidir (documentar | skip | complementar)  
+Ver: [`source-of-truth-principle.md`](references/source-of-truth-principle.md), [`example-avoid-duplication.md`](references/example-avoid-duplication.md), [`example-complement-partial.md`](references/example-complement-partial.md)
 
-### 1. Proactividad Obligatoria
+### 3. Fuente de Verdad
+Documento > contexto conversacional (en conflictos)  
+Ver: [`source-of-truth-principle.md`](references/source-of-truth-principle.md)
 
-**El agente DEBE documentar automáticamente, SIN que el usuario lo solicite**, cuando se realice trabajo significativo.
+### 4. Reactivo
+Usuario solicita explícitamente → Verificar atomicidad → Documentar  
+Ver: [`example-reactive-instruction.md`](references/example-reactive-instruction.md)
 
-**Criterios detallados:** [`references/when-to-document.md`](references/when-to-document.md)
-
-**Contraejemplos:** [`references/when-not-to-document.md`](references/when-not-to-document.md)
-
-**Ejemplo completo:** [`references/example-proactive-implementation.md`](references/example-proactive-implementation.md)
-
-**Comportamiento esperado:**
-```
-Usuario: "Implementa login con JWT"
-↓
-Agente: 
-1. Implementa funcionalidad
-2. DOCUMENTA AUTOMÁTICAMENTE (sin esperar instrucción)
-3. Responde: "✓ Login implementado y documentado en sesión"
-```
-
-### 2. Atomicidad y No Duplicación
-
-**ANTES de documentar, el agente DEBE:**
-1. Leer físicamente el archivo de sesión actual
-2. Verificar si la información ya está documentada
-3. Decidir: Si YA existe → Informar | Si NO → Documentar | Si parcial → Complementar
-
-**Principio completo:** [`references/source-of-truth-principle.md`](references/source-of-truth-principle.md)
-
-**Ejemplos:**
-- Evitar duplicación: [`references/example-avoid-duplication.md`](references/example-avoid-duplication.md)
-- Complementar parcial: [`references/example-complement-partial.md`](references/example-complement-partial.md)
-
-**Comportamiento esperado:**
-```
-Usuario: "Implementé login con JWT" 
-↓
-Agente:
-1. LEE doc/agents-sessions/YYYYMMDD-XXX-CLAUDE.md
-2. BUSCA si JWT/login ya documentado
-3. Si SÍ → "Ya documentado en sesión (sección 14:23)"
-   Si NO → Documenta
-```
-
-### 3. Fuente de Verdad Única
-
-**El documento de sesión es la autoridad definitiva** sobre qué se ha hecho, qué decisiones se tomaron y por qué.
-
-**Contexto conversacional:** Volátil, puede estar desactualizado, se pierde con compactaciones.
-
-**Regla de oro:** En caso de contradicción, el documento prevalece sobre la memoria conversacional.
-
-**Detalles:** [`references/source-of-truth-principle.md`](references/source-of-truth-principle.md)
-
-### 4. Comportamiento Reactivo
-
-Aunque proactivo es el core, el agente DEBE responder a instrucciones explícitas:
-
-```
-Usuario: "Anota que tenemos pendiente refactorizar X"
-→ Agente verifica atomicidad y documenta en "Próximos Pasos"
-```
-
-**Ejemplo completo:** [`references/example-reactive-instruction.md`](references/example-reactive-instruction.md)
-
-### 5. Consultas Informativas
-
-**NO documentar** cuando el usuario solo pregunta sobre decisiones pasadas:
-
-```
-Usuario: "¿Por qué usamos JWT?"
-→ Agente consulta sesión, responde, NO documenta la pregunta
-```
-
-**Ejemplo completo:** [`references/example-informational-query.md`](references/example-informational-query.md)
+### 5. Consultas NO Se Documentan
+Usuario pregunta sobre decisiones pasadas → Consultar sesión → Responder → NO documentar pregunta  
+Ver: [`example-informational-query.md`](references/example-informational-query.md)
 
 ---
 
-## Idioma y Localización
+## Localización
 
-**IMPORTANTE:** Toda la documentación debe generarse en **Español de España**.
-
-- **Fechas:** "DD de MMMM de YYYY" (ej: "9 de febrero de 2026")
-- **Hora:** Formato 24h "HH:MM" (ej: "14:30")
-- **Vocabulario:** Español de España (ej: "ordenador" no "computadora")
-- **Meses:** enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre
+**Idioma:** Español de España  
+**Fechas:** DD de MMMM de YYYY (9 de febrero de 2026)  
+**Hora:** 24h HH:MM (14:30)  
+**Vocabulario:** ordenador (no computadora)
 
 ---
 
-## Estructura de Archivos
+## Estructura
 
 ```
-doc/
-└── agents-sessions/
-    ├── changelog-sessions.md
-    ├── 20260209-001-CLAUDE.md
-    ├── 20260209-002-CLAUDE.md
-    └── ...
+doc/agents-sessions/
+├── YYYYMMDD-001-CLAUDE.md
+└── YYYYMMDD-002-CLAUDE.md
 ```
 
-**Template completo:** [`assets/templates/session-file-template.md`](assets/templates/session-file-template.md)
+**Template:** [`session-file-template.md`](assets/templates/session-file-template.md)
 
 ---
 
-## Comportamiento del Skill
+## Workflow
 
-### 1. Detección Automática de Nueva Sesión
+**Nueva sesión:**
+1. Verificar/crear `doc/agents-sessions/`
+2. Secuencia: listar `YYYYMMDD-*-CLAUDE.md` → incrementar
+3. Crear `YYYYMMDD-XXX-CLAUDE.md`
+4. Informar: "Sesión YYYYMMDD-XXX-CLAUDE.md creada"
 
-Al inicio de conversación:
+**Durante (AUTOMÁTICO):**
+1. Leer archivo → Verificar atomicidad → Si nuevo: documentar | Si existe: skip | Si parcial: complementar
+2. Actualizar incrementalmente (NO reescribir completo)
+3. Añadir sección con timestamp
+4. Actualizar "Hora últimos trabajos"
 
-1. Verificar si existe `doc/agents-sessions/`
-   - Si NO → Crear directorio + `changelog-sessions.md`
-2. Determinar número de sesión: Listar archivos `YYYYMMDD-*-CLAUDE.md`, incrementar contador
-3. Crear archivo: `YYYYMMDD-XXX-CLAUDE.md` con metadata inicial
-4. Informar discretamente: "Sesión documentada en `doc/agents-sessions/20260209-001-CLAUDE.md`"
+**Cierre:**
+Actualizar métricas → Completar "Próximos Pasos" → Estado: "Completada"
 
-### 2. Actualización Durante la Sesión (PROACTIVA)
-
-**El agente documenta AUTOMÁTICAMENTE cuando:**
-- Se complete tarea significativa (ver [`references/when-to-document.md`](references/when-to-document.md))
-- Se tome decisión técnica con alternativas
-- Se modifiquen archivos que afecten lógica de negocio
-
-**ANTES de documentar:**
-1. Leer archivo de sesión
-2. Verificar atomicidad
-3. Si existe → No duplicar
-4. Si no existe → Documentar
-5. Si parcial → Complementar
-
-**Actualización incremental:**
-- NO reescribir archivo completo
-- Añadir nueva sección con timestamp
-- Actualizar "Hora de últimos trabajos"
-
-### 3. Cierre de Sesión
-
-Cuando el usuario lo solicite:
-
-1. Actualizar métricas finales
-2. Completar "Próximos Pasos"
-3. Añadir estado final: "Completada"
-4. Confirmar: "Sesión documentada y cerrada"
+Ver workflow detallado: [`workflow-detailed.md`](references/workflow-detailed.md)
 
 ---
 
 ## Niveles de Detalle
 
-### Modo CONCISO (por defecto)
-- Resumen 2-3 líneas por tarea
-- Solo decisiones técnicas importantes
-- Métricas básicas
-
-### Modo DETALLADO (cuando se solicita)
-- Descripción completa de cada paso
-- Todas decisiones con alternativas
-- Código relevante incluido
-- Métricas exhaustivas
-
-### Modo MINIMAL (para tareas triviales)
-- Solo timestamp + título + resultado
-- Sin métricas detalladas
+| Modo | Contenido | Métricas |
+|------|-----------|----------|
+| **CONCISO** (default) | Resumen 2-3 líneas/tarea, decisiones importantes | Básicas |
+| **DETALLADO** | Pasos completos, todas decisiones, código relevante | Exhaustivas |
+| **MINIMAL** | Timestamp + título + resultado | N/A |
 
 ---
 
-## Reglas Importantes
+## ✅ HACER
 
-### ✅ HACER
-
-- **Documentar PROACTIVAMENTE** sin esperar instrucción
-- **Verificar atomicidad** antes de documentar (leer sesión primero)
-- **Usar documento como fuente de verdad** (no confiar solo en contexto)
-- Documentar decisiones con contexto y alternativas consideradas
-- Mantener timestamps precisos (formato 24h)
+- Documentar PROACTIVAMENTE (sin esperar instrucción)
+- Verificar atomicidad SIEMPRE (leer sesión primero)
+- Usar documento como fuente de verdad (no solo contexto)
+- Documentar decisiones con contexto + alternativas
+- Timestamps precisos (formato 24h)
 - Actualizar incrementalmente (no reescribir)
-- Usar lenguaje específico (no vago)
+- Lenguaje específico (no vago)
 - Incluir referencias (commits, archivos, issues)
-- Separar "Trabajo Realizado" de "Próximos Pasos"
+- Separar "Trabajo Realizado" vs "Próximos Pasos"
 
-### ❌ NO HACER
+## ❌ NO HACER
 
-- **NO esperar** a que usuario diga "documenta esto"
-- **NO duplicar** información ya documentada
-- **NO confiar solo** en memoria conversacional
-- **NO documentar** consultas informativas del usuario
+- NO esperar instrucción "documenta esto"
+- NO duplicar información ya documentada
+- NO confiar solo en memoria conversacional
+- NO documentar consultas informativas del usuario
 - No reescribir archivo completo en actualizaciones
-- No usar lenguaje vago ("se mejoró", "se arregló")
+- No lenguaje vago ("se mejoró", "se arregló")
 - No asumir documentación sin verificar archivo físicamente
 
 ---
 
-## Integración con Otras Herramientas
+## Referencias Completas
 
-### Con CHANGELOG.md
-
-El archivo de sesión sirve como **fuente de verdad** para `CHANGELOG.md`:
-- Cada sesión genera bloque en `Unreleased`
-- Información resumida vincula a archivo de sesión
-- NO duplicar, solo referenciar
-
-### Con Releases
-
-Al cerrar versión:
-- Archivos de sesión → Release notes detallados
-- `CHANGELOG.md` se genera desde sesiones
-- Archivos permanecen como historial
-
----
-
-## Ejemplos Completos
-
-Todos los ejemplos están en [`references/`](references/):
-
-1. **Proactividad:** [`example-proactive-implementation.md`](references/example-proactive-implementation.md)
-2. **Atomicidad:** [`example-avoid-duplication.md`](references/example-avoid-duplication.md)
-3. **Complementar:** [`example-complement-partial.md`](references/example-complement-partial.md)
-4. **Consultas:** [`example-informational-query.md`](references/example-informational-query.md)
-5. **Reactivo:** [`example-reactive-instruction.md`](references/example-reactive-instruction.md)
-
----
-
-## Personalización
-
-El skill puede adaptarse según preferencias:
-
-- **Alias del agente:** Por defecto "CLAUDE", configurable
-- **Nivel de detalle:** Conciso | Detallado | Minimal
-- **Idioma:** Español (default) | Inglés
-
----
-
-## Conclusión
-
-Este skill mantiene trazabilidad completa del trabajo, asegurando que ninguna información se pierda en compactaciones de contexto.
-
-**Principios clave:**
-
-1. **Proactividad:** Documentación AUTOMÁTICA durante el trabajo
-2. **Atomicidad:** SIEMPRE verificar antes de documentar
-3. **Fuente de Verdad:** Documento > contexto conversacional
-
-**Resultado:** Cada sesión se convierte en registro permanente, verificable y completo del desarrollo, eliminando documentación manual posterior y preservando conocimiento ante compactaciones de contexto.
+Ver [`references/`](references/) para:
+- Cuándo documentar / cuándo NO
+- Principio fuente de verdad
+- Ejemplos completos (proactividad, atomicidad, reactivo, consultas)
+- Workflow detallado paso a paso
