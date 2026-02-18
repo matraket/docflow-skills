@@ -2,13 +2,20 @@
 name: session-manager
 description: >
   Gestiona sesiones de trabajo con agentes IA. Documenta automáticamente 
-  trabajo significativo en doc/agents-sessions/ con formato YYYYMMDD-XXX-{agent}.md.
+  trabajo significativo en doc/agents-sessions/ con formato YYYYMMDD-XXX-{user}-{agent}.md.
   Trigger: documentar sesión, crear sesión, actualizar sesión, verificar atomicidad,
   fuente de verdad, cierre de sesión, trabajo significativo completado.
 metadata:
-  author: adrianalbr
-  version: "1.3.0"
+  author: Adrián Cester
+  version: "1.4.1"
   scope: [root]
+  auto_invoke:
+    - "Implementaciones de Lógica de Negocio, Cambios en APIs o Contratos"
+    - "Decisiones Arquitectónicas o Técnicas Críticas, Debates Técnicos (Aunque No Se Implemente Todavía)"
+    - "Cambios en Estructura de Base de Datos"
+    - "Integración de Librerías o Servicios Externos"
+    - "Refactorizaciones Significativas, Problemas Críticos Resueltos"
+    - "Configuraciones de Infraestructura"
 allowed-tools: Read, Edit, Write, Bash
 ---
 
@@ -53,9 +60,14 @@ Ver: [`example-informational-query.md`](references/example-informational-query.m
 
 ```
 doc/agents-sessions/
-├── YYYYMMDD-001-CLAUDE.md
-└── YYYYMMDD-002-CLAUDE.md
+├── YYYYMMDD-001-user-CLAUDE.md
+└── YYYYMMDD-002-user-GPT4.md
 ```
+
+**Formato:** `YYYYMMDD-XXX-{user}-{agent}.md`
+- `{user}`: Nombre desarrollador desde `USER_SESSION_MANAGER` en `.env` (sanitizado: [a-zA-Z0-9])
+- `{agent}`: Alias agente IA (ver [`agent-aliases.md`](references/agent-aliases.md))
+- Si `USER_SESSION_MANAGER` no existe → usar `unknown` y notificar al usuario
 
 **Template:** [`session-file-template.md`](assets/templates/session-file-template.md)
 
@@ -65,18 +77,28 @@ doc/agents-sessions/
 
 **Nueva sesión:**
 1. Verificar/crear `doc/agents-sessions/`
-2. Secuencia: listar `YYYYMMDD-*-CLAUDE.md` → incrementar
-3. Crear `YYYYMMDD-XXX-CLAUDE.md`
-4. Informar: "Sesión YYYYMMDD-XXX-CLAUDE.md creada"
+2. Leer `USER_SESSION_MANAGER` de `.env`  → `{user}` → sanitizar [a-zA-Z0-9] → Si no existe: `unknown` + notificar
+3. Obtener alias agente IA → `{agent}` (ver [`agent-aliases.md`](references/agent-aliases.md))
+4. Calcular fecha ACTUAL con comando (nunca estática): `date +%Y%m%d` -> `YYYYMMDD`
+5. Secuencia: listar `YYYYMMDD-*-{user}-{agent}.md` → incrementar `XXX`
+6. **CRÍTICO - Persistencia nombre de sesión.** Ventana de contexto almacena nombre de sesión → Debe perdurar tras compactaciones y reanudaciones de sesión.  
+7. Informar: "Sesión YYYYMMDD-XXX-{user}-{agent}.md creada"
 
 **Durante (AUTOMÁTICO):**
-1. Leer archivo → Verificar atomicidad → Si nuevo: documentar | Si existe: skip | Si parcial: complementar
-2. Actualizar incrementalmente (NO reescribir completo)
-3. Añadir sección con timestamp
-4. Actualizar "Hora últimos trabajos"
+1. **CRÍTICO - Recuperar nombre de sesión desde contexto** (no asumir en memoria). Si no existe → Interpretar **Nueva sesión** → Crear nuevo archivo de sesión.
+2. Leer archivo → Verificar atomicidad → Si nuevo: documentar | Si existe: skip | Si parcial: complementar
+3. Actualizar incrementalmente (NO reescribir completo)
+4. Añadir sección con timestamp ACTUAL (comando `date +%H:%M`, nunca estático)
+5. Actualizar "Hora últimos trabajos" con timestamp ACTUAL
 
 **Cierre:**
-Actualizar métricas → Completar "Próximos Pasos" → Estado: "Completada"
+1. Actualizar métricas → Completar "Próximos Pasos" → Estado: "Completada"
+2. **CRÍTICO - elminar nombre de sesión del contexto** (no asumir que se mantiene tras cierre)
+
+**CRÍTICO - Fecha/Hora:**
+- SIEMPRE calcular con comandos en momento de uso: `date +%Y%m%d`, `date +%H:%M`, etc.
+- NUNCA usar valores estáticos, manuales o en memoria
+- Aplicar tanto a nombres de archivo como a timestamps internos
 
 Ver workflow detallado: [`workflow-detailed.md`](references/workflow-detailed.md)
 
@@ -121,5 +143,6 @@ Ver workflow detallado: [`workflow-detailed.md`](references/workflow-detailed.md
 Ver [`references/`](references/) para:
 - Cuándo documentar / cuándo NO
 - Principio fuente de verdad
+- Alias de agentes IA comunes
 - Ejemplos completos (proactividad, atomicidad, reactivo, consultas)
 - Workflow detallado paso a paso

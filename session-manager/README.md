@@ -23,6 +23,14 @@ Permite que agentes IA documenten automáticamente su trabajo durante las sesion
    - El skill se activará automáticamente cuando esté en la ruta de skills
    - No requiere configuración adicional
 
+3. **Configurar identificación de desarrollador (recomendado):**
+   ```bash
+   # En la raíz de tu proyecto, crear/editar .env
+   echo "USER_SESSION_MANAGER=tu_nombre" >> .env
+   ```
+   - Si no se configura, se usará `unknown` como identificador
+   - Solo caracteres alfanuméricos (sanitización automática)
+
 ## 🚀 Uso
 
 ### Inicio automático
@@ -62,19 +70,26 @@ Claude: [Completa métricas, estado final, próximos pasos]
 
 ```
 tu-proyecto/
+├── .env                        # USER_SESSION_MANAGER=tu_nombre
 └── doc/
     └── agents-sessions/
-        ├── 20260209-001-CLAUDE.md     # Sesión del 9 feb, primera del día
-        ├── 20260209-002-CLAUDE.md     # Sesión del 9 feb, segunda del día
+        ├── 20260209-001-adrian-CLAUDE.md
+        ├── 20260209-002-maria-GPT4.md
+        ├── 20260211-001-carlos-COPILOT.md
         └── ...
 ```
+
+**Formato:** `YYYYMMDD-XXX-{user}-{agent}.md`
+- `{user}`: Configurado en variable `USER_SESSION_MANAGER` del archivo `.env`
+- `{agent}`: Alias del agente IA (ver documentación de agentes)
 
 ## 🎨 Ejemplo de archivo de sesión
 
 ```markdown
-# Sesión Agente: 20260209-001-CLAUDE
+# Sesión Agente: 20260209-001-adrian-CLAUDE
 
 * **Agente de IA:** Claude (Sonnet 4.5)
+* **Desarrollador:** adrian
 * **Fecha creación:** 9 de febrero de 2026
 * **Hora de inicio:** 14:15
 * **Hora de últimos trabajos:** 16:42
@@ -157,12 +172,13 @@ Claude: [Reduce nivel de detalle]
 
 ### Alias del agente
 
-Por defecto: **CLAUDE**
+Por defecto según el agente que esté usando el skill.
 
-```
-Usuario: Usa "GPT4" como alias en las sesiones
-Claude: [Cambia a 20260209-001-GPT4.md]
-```
+Consulta la tabla de agentes IA comunes y sus alias en la documentación:
+- Claude → `CLAUDE`
+- GPT-4 → `GPT4`
+- GitHub Copilot → `COPILOT`
+- [Ver lista completa de agentes](references/agent-aliases.md)
 
 ### Idioma
 
@@ -210,7 +226,7 @@ MIT License - Ver LICENSE para detalles
 ---
 
 **Creado por:** Adrián (IPGSoft)  
-**Versión:** 1.4.0  
+**Versión:** 1.4.1  
 **Última actualización:** 11 de febrero de 2026
 
 ---
@@ -229,7 +245,7 @@ Sistema proactivo de documentación automática de sesiones de trabajo con agent
 
 ```
 session-manager/
-├── SKILL.md                    (126 líneas - core esencial)
+├── SKILL.md                    (138 líneas - core esencial)
 ├── README.md
 ├── CHANGELOG.md          
 ├── assets/                     (recursos estáticos)
@@ -239,7 +255,8 @@ session-manager/
     ├── when-to-document.md
     ├── when-not-to-document.md
     ├── source-of-truth-principle.md
-    ├── workflow-detailed.md                    ← NUEVO v1.4.0
+    ├── workflow-detailed.md
+    ├── agent-aliases.md                        ← NUEVO v1.4.1
     ├── example-proactive-implementation.md
     ├── example-avoid-duplication.md
     ├── example-complement-partial.md
@@ -248,6 +265,22 @@ session-manager/
 ```
 
 **Cumple con:** [agentskills.io](https://agentskills.io) especificaciones oficiales
+
+---
+
+## 🆕 Cambios en v1.4.1
+
+**Desarrollo colaborativo y precisión temporal:**
+
+- ✅ **Nueva nomenclatura:** `YYYYMMDD-XXX-{user}-{agent}.md` para multi-desarrollador
+- ✅ **Variable USER_SESSION_MANAGER:** Identificación automática desde `.env`
+- ✅ **Sanitización usuario:** Solo `[a-zA-Z0-9]` en nombres
+- ✅ **Timestamps dinámicos:** Cálculo obligatorio con comandos (nunca estáticos)
+- ✅ **Alias de agentes:** Tabla estandarizada en `references/agent-aliases.md`
+- ✅ **Notificación configuración:** Si USER_SESSION_MANAGER no existe
+- ✅ **Compatibilidad:** Sesiones v1.4.0 siguen funcionando
+
+Ver [CAMBIOS-v1.4.1.md](CAMBIOS-v1.4.1.md) para detalles completos.
 
 ---
 
@@ -296,11 +329,12 @@ Ver [CAMBIOS-v1.4.0.md](CAMBIOS-v1.4.0.md) para detalles completos.
 
 ### Para Claude (agentes IA)
 
-1. **Lee SKILL.md** (~2,520 tokens, principios core)
+1. **Lee SKILL.md** (~2,760 tokens, principios core)
 2. **Si necesita ejemplos:** Lee `references/example-*.md`
 3. **Si necesita criterios:** Lee `references/when-*.md` o `references/source-of-truth-principle.md`
 4. **Si necesita workflow detallado:** Lee `references/workflow-detailed.md`
-5. **Si necesita template:** Lee `assets/templates/session-file-template.md`
+5. **Si necesita alias de agentes:** Lee `references/agent-aliases.md`
+6. **Si necesita template:** Lee `assets/templates/session-file-template.md`
 
 ### Para Desarrolladores
 
@@ -329,22 +363,25 @@ Ver [CAMBIOS-v1.4.0.md](CAMBIOS-v1.4.0.md) para detalles completos.
 
 ## 📊 Estadísticas
 
-| Métrica | v1.0.0 | v1.3.0 Original | v1.3.0 Modular | v1.4.0 |
-|---------|--------|-----------------|----------------|--------|
-| Líneas SKILL.md | 363 | 594 | 257 | **126** |
-| Tokens SKILL.md | ~2,800 | ~5,275 | ~1,300 | **~2,520** |
-| Secciones inline | 12 | 15 | 11 | **6** |
-| Ejemplos inline | 3 | 7 | 5 | **0** |
-| Referencias externas | 0 | 0 | 3 | **9** |
-| Extensibilidad | Baja | Baja | Alta | **Alta** |
-| Progressive Disclosure | ❌ | ⚠️ | ✅ | **✅** |
+| Métrica | v1.0.0 | v1.3.0 Original | v1.3.0 Modular | v1.4.0 | v1.4.1 |
+|---------|--------|-----------------|----------------|--------|--------|
+| Líneas SKILL.md | 363 | 594 | 257 | 126 | **138** |
+| Tokens SKILL.md | ~2,800 | ~5,275 | ~1,300 | ~2,520 | **~2,760** |
+| Secciones inline | 12 | 15 | 11 | 6 | **6** |
+| Ejemplos inline | 3 | 7 | 5 | 0 | **0** |
+| Referencias externas | 0 | 0 | 3 | 9 | **10** |
+| Extensibilidad | Baja | Baja | Alta | Alta | **Alta** |
+| Progressive Disclosure | ❌ | ⚠️ | ✅ | ✅ | **✅** |
+| Multi-desarrollador | ❌ | ❌ | ❌ | ❌ | **✅** |
 
 ---
 
 ## 📗 Documentación
 
-- **SKILL.md** - Instrucciones core para Claude (126 líneas)
+- **SKILL.md** - Instrucciones core para Claude (138 líneas)
+- **CAMBIOS-v1.4.1.md** - Desarrollo colaborativo y timestamps dinámicos
 - **CAMBIOS-v1.4.0.md** - Compactación y eliminación SESSION_DATE
+- **references/agent-aliases.md** - Tabla de alias de agentes IA
 - **references/workflow-detailed.md** - Workflow paso a paso
 - **references/when-to-document.md** - Criterios proactividad
 - **references/when-not-to-document.md** - Criterios exclusión
@@ -355,6 +392,33 @@ Ver [CAMBIOS-v1.4.0.md](CAMBIOS-v1.4.0.md) para detalles completos.
 ---
 
 ## 🔄 Migración
+
+### De v1.4.0 a v1.4.1
+
+**Cambios en comportamiento:**
+- ⚠️ **Nueva nomenclatura:** Archivos ahora incluyen `{user}` y `{agent}`
+- ✅ **Retrocompatible:** Sesiones v1.4.0 siguen siendo legibles
+
+**Archivos nuevos:**
+- `references/agent-aliases.md`
+- `CAMBIOS-v1.4.1.md`
+
+**Configuración requerida:**
+```bash
+# Añadir a .env en raíz del proyecto
+echo "USER_SESSION_MANAGER=tu_nombre" >> .env
+```
+
+**Actualización:**
+```bash
+# Reemplazar SKILL.md
+cp SKILL-v1.4.1.md SKILL.md
+
+# Añadir nuevo archivo de referencias
+cp references/agent-aliases.md references/
+```
+
+---
 
 ### De v1.3.0 a v1.4.0
 
