@@ -4,8 +4,9 @@
 
 1. [Paso 1: Recopilar información](#paso-1)
 2. [Paso 2: Generar el release note](#paso-2)
-3. [Paso 3: Mover Unreleased a changelog-sessions.md](#paso-3)
-4. [Paso 4: Actualizar CHANGELOG.md](#paso-4)
+3. [Paso 3: Generar borrador de sección versionada](#paso-3)
+4. [Paso 4: Revisar y refinar el borrador](#paso-4)
+5. [Paso 5: Mover Unreleased a changelog-sessions.md](#paso-5)
 
 ---
 
@@ -110,9 +111,45 @@ El release note es el documento **más exhaustivo** del ciclo. A diferencia del 
 
 ---
 
-## Paso 3: Mover Unreleased a changelog-sessions.md
+## Paso 3: Generar borrador de sección versionada
 
 Ejecutar el script desde la raíz del proyecto:
+
+```bash
+# Con Python (preferido)
+python3 scripts/create_release_draft.py X.Y.Z --type [Patch|Minor|Major]
+
+# Con shell (si Python no está disponible)
+bash scripts/create_release_draft.sh X.Y.Z --type [Patch|Minor|Major]
+```
+
+El script extrae automáticamente de los bloques de sesión en `[Unreleased]`:
+- Cabecera con fecha, tipo, periodo de desarrollo y enlaces a sesiones
+- Todas las entradas de Added/Changed/Fixed/Removed en bruto
+- Información de git (commits, hashes) si hay tags disponibles
+- Campos `[COMPLETAR]` para los datos que requieren intervención manual (tests, cobertura)
+
+El resultado es una sección `## [X.Y.Z]` en `CHANGELOG.md` marcada con `⚠️ BORRADOR`.
+
+---
+
+## Paso 4: Revisar y refinar el borrador
+
+El agente revisa la sección generada en `CHANGELOG.md`:
+
+1. **Deduplicar**: eliminar entradas repetidas entre sesiones
+2. **Redacción**: mejorar claridad si alguna entrada es demasiado técnica o ambigua
+3. **Completar `[COMPLETAR]`**: solicitar al usuario métricas de tests/cobertura o ejecutar:
+   ```bash
+   npm test -- --coverage   # o el comando equivalente del proyecto
+   ```
+4. **Eliminar** la línea `⚠️ BORRADOR` una vez revisado
+
+---
+
+## Paso 5: Mover Unreleased a changelog-sessions.md
+
+**CRÍTICO:** Ejecutar solo después de que el borrador esté revisado y finalizado.
 
 ```bash
 # Con Python (preferido)
