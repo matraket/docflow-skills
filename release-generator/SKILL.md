@@ -2,11 +2,10 @@
 name: release-generator
 description: >
   Cierra una versión del proyecto generando toda la documentación de release.
-  Ejecuta un proceso secuencial de 5 pasos: genera el documento detallado de release
+  Ejecuta un proceso secuencial de 4 pasos: genera el documento detallado de release
   en doc/releases/X.Y.Z.md (usando doc/releases/template.md), mueve los bloques de
-  [Unreleased] íntegramente a doc/agents-sessions/changelog-sessions.md, crea la
-  sección versionada agregada en CHANGELOG.md, limpia [Unreleased] y actualiza
-  doc/releases/README.md.
+  [Unreleased] íntegramente a doc/agents-sessions/changelog-sessions.md mediante script,
+  crea la sección versionada agregada en CHANGELOG.md y limpia [Unreleased].
   Trigger: cerrar versión, generar release, crear release notes, publicar versión,
   release X.Y.Z, cerrar sprint, documentar release.
 metadata:
@@ -18,7 +17,7 @@ allowed-tools: Read, Edit, Write, Bash
 
 # Release Generator
 
-Genera la documentación completa al cerrar una versión. Orquesta 5 operaciones
+Genera la documentación completa al cerrar una versión. Orquesta 4 pasos
 sobre 4 archivos usando los archivos de sesión y el `[Unreleased]` del CHANGELOG.md
 como fuente única de verdad.
 
@@ -67,11 +66,24 @@ Ver detalle de secciones: [`references/release-process.md`](references/release-p
 
 ### Paso 3: Mover `[Unreleased]` a `changelog-sessions.md`
 
-**CRÍTICO: Trasladar íntegramente, sin modificar ni resumir.**
+**CRÍTICO: Trasladar íntegramente, sin modificar ni resumir. Usar el script.**
 
-1. Leer `doc/agents-sessions/changelog-sessions.md` (crearlo si no existe)
-2. Copiar todos los bloques de sesión de `[Unreleased]` al inicio de `changelog-sessions.md`
-3. El contenido se traslada exactamente tal como está en `CHANGELOG.md`
+Ejecutar el script correspondiente desde la raíz del proyecto:
+
+```bash
+# Con Python (preferido)
+python3 scripts/move_unreleased.py X.Y.Z
+
+# Con shell (si Python no está disponible)
+bash scripts/move_unreleased.sh X.Y.Z
+```
+
+El script:
+- Crea `doc/agents-sessions/changelog-sessions.md` si no existe
+- Mueve los bloques de sesión íntegramente con su cabecera de versión
+- Limpia `[Unreleased]` en `CHANGELOG.md`
+
+> Los scripts están en `release-generator/scripts/`, copiarlos al proyecto si es necesario.
 
 ### Paso 4: Actualizar `CHANGELOG.md`
 
@@ -99,3 +111,5 @@ Ver formato exacto: [`references/changelog-closure-format.md`](references/change
 
 - [`references/release-process.md`](references/release-process.md) — Guía detallada por paso: qué recopilar, cómo redactar secciones, comandos git
 - [`references/changelog-closure-format.md`](references/changelog-closure-format.md) — Formato exacto del CHANGELOG.md tras el cierre
+- [`scripts/move_unreleased.py`](scripts/move_unreleased.py) — Script Python para el Paso 3
+- [`scripts/move_unreleased.sh`](scripts/move_unreleased.sh) — Script shell para el Paso 3 (fallback sin Python)

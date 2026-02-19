@@ -112,28 +112,22 @@ El release note es el documento **más exhaustivo** del ciclo. A diferencia del 
 
 ## Paso 3: Mover Unreleased a changelog-sessions.md
 
-### Proceso
+Ejecutar el script desde la raíz del proyecto:
 
-1. Leer `doc/agents-sessions/changelog-sessions.md`
-   - Si no existe → crear con cabecera:
-     ```markdown
-     # Changelog de Sesiones
+```bash
+# Con Python (preferido)
+python3 scripts/move_unreleased.py X.Y.Z
 
-     Histórico detallado de sesiones de trabajo. Cada bloque corresponde a una
-     sesión de agente IA. Este archivo es el registro completo trasladado desde
-     las secciones [Unreleased] del CHANGELOG.md al cerrar cada versión.
+# Con shell (si Python no está disponible)
+bash scripts/move_unreleased.sh X.Y.Z
+```
 
-     ---
-     ```
-2. Extraer todos los bloques de sesión de `[Unreleased]` (desde el primer `###` hasta el último `---`)
-3. Insertar esos bloques al inicio del archivo (después de la cabecera), añadiendo una referencia a la versión que se cierra:
-   ```markdown
-   ## Sesiones del release [X.Y.Z] - YYYY-MM-DD
+El script hace todo automáticamente:
+- Crea `doc/agents-sessions/changelog-sessions.md` si no existe
+- Inserta un bloque `## Sesiones del release [X.Y.Z] - YYYY-MM-DD` con los bloques de sesión íntegros
+- Limpia la sección `[Unreleased]` en `CHANGELOG.md`
 
-   [bloques de sesión íntegros]
-   ```
-
-**CRÍTICO:** El contenido se copia tal cual, sin modificar redacción ni estructura.
+**CRÍTICO:** No editar el contenido manualmente en este paso. El script garantiza la integridad del traslado.
 
 ---
 
