@@ -1,6 +1,6 @@
-# Release Notes - ButtonEventSet
+# Guia de Release
 
-Esta carpeta contiene las notas de release (release notes) oficiales del proyecto ButtonEventSet, organizadas por versión.
+Este archivo contiene el workflow y las instrucciones para generar un nuevo release de un proyecto.
 
 ## 📂 Estructura
 
@@ -271,7 +271,6 @@ git diff --stat [hash-inicial]..[hash-final]
 - [ ] Actualizar roadmap futuro
 - [ ] Revisar ortografía y formato
 - [ ] Actualizar encabezado del CHANGELOG.md correspondiente
-- [ ] Añadir entrada en esta tabla (README.md de releases)
 
 ---
 
