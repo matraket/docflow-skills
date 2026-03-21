@@ -117,17 +117,6 @@ Automatiza el cierre completo de versiones generando release notes detalladas, a
 
 ---
 
-## 📚 Documentación adicional
-
-| Documento | Descripción |
-|:----------|:------------|
-| [instrucciones-documentacion.md](instrucciones-documentacion.md) | Instrucciones de documentación del proyecto. |
-| [doc_releases_README.md](doc_releases_README.md) | Documentación del proceso de releases. |
-| [doc_releases_template.md](doc_releases_template.md) | Template para release notes. |
-| [AGENTS.md](AGENTS.md) | Guía para agentes del proyecto. |
-
----
-
 ## 📄 Licencia
 
 MIT License
