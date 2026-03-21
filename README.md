@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/docflow-skills.svg" alt="doc-work-skill banner" width="100%" />
+</p>
+
 # 📝 doc-work-skill
 
 ### Cadena de documentación automatizada para proyectos asistidos por IA.
@@ -105,11 +109,22 @@ Automatiza el cierre completo de versiones generando release notes detalladas, a
 ## 📦 Instalación
 
 1. Clonar o copiar las carpetas de los skills que se necesiten al directorio de skills del proyecto destino.
-2. Registrar los skills en el archivo `AGENTS.md` del proyecto, en la tabla de skills disponibles.
+2. Registrar los skills en el archivo `CLAUDE.md` del proyecto, en la tabla de skills disponibles.
 3. Configurar los archivos de documentación base (`CHANGELOG.md`, `changelog-sessions.md`) según las instrucciones de cada skill.
 
 > [!TIP]
 > Si solo necesitas una parte del flujo, puedes instalar skills individuales. No es obligatorio usar los tres.
+
+---
+
+## 📚 Documentación adicional
+
+| Documento | Descripción |
+|:----------|:------------|
+| [instrucciones-documentacion.md](instrucciones-documentacion.md) | Instrucciones de documentación del proyecto. |
+| [doc_releases_README.md](doc_releases_README.md) | Documentación del proceso de releases. |
+| [doc_releases_template.md](doc_releases_template.md) | Template para release notes. |
+| [AGENTS.md](AGENTS.md) | Guía para agentes del proyecto. |
 
 ---
 
