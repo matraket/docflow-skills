@@ -105,7 +105,7 @@ Automatiza el cierre completo de versiones generando release notes detalladas, a
 ## 📦 Instalación
 
 1. Clonar o copiar las carpetas de los skills que se necesiten al directorio de skills del proyecto destino.
-2. Registrar los skills en el archivo `CLAUDE.md` del proyecto, en la tabla de skills disponibles.
+2. Registrar los skills en el archivo `AGENTS.md` del proyecto, en la tabla de skills disponibles.
 3. Configurar los archivos de documentación base (`CHANGELOG.md`, `changelog-sessions.md`) según las instrucciones de cada skill.
 
 > [!TIP]
