@@ -1,73 +1,133 @@
-# doc-work-skill
+# 📝 doc-work-skill
 
-## Proposito
+### Cadena de documentación automatizada para proyectos asistidos por IA.
 
-Coleccion de 3 skills integrados que forman una cadena de documentacion automatizada para proyectos asistidos por IA. Cubren desde el registro de sesiones de trabajo hasta la generacion de release notes, garantizando trazabilidad completa del proceso de desarrollo.
+![Skills](https://img.shields.io/badge/skills-3-blue)
+![Pipeline](https://img.shields.io/badge/pipeline-session→changelog→release-brightgreen)
+![Licencia](https://img.shields.io/badge/licencia-MIT-yellow)
 
-## Flujo de Trabajo
+---
 
+## Tabla de contenidos
+
+- [🎯 Propósito](#-propósito)
+- [🔄 Flujo de trabajo](#-flujo-de-trabajo)
+- [⚙️ Skills](#️-skills)
+- [📦 Instalación](#-instalación)
+- [📚 Documentación adicional](#-documentación-adicional)
+- [📄 Licencia](#-licencia)
+
+---
+
+## 🎯 Propósito
+
+Colección de 3 skills integrados que forman una cadena de documentación automatizada para proyectos asistidos por IA. Cubren desde el registro de sesiones de trabajo hasta la generación de release notes, garantizando **trazabilidad completa** del proceso de desarrollo.
+
+---
+
+## 🔄 Flujo de trabajo
+
+```mermaid
+graph LR
+    A["🗒️ session-manager"] -->|sesiones documentadas| B["📋 changelog-updater"]
+    B -->|cambios agrupados| C["🚀 release-generator"]
+
+    style A fill:#4a7c59,stroke:#2d4a35,color:#fff
+    style B fill:#2c3e6b,stroke:#1a2744,color:#fff
+    style C fill:#7b3b8a,stroke:#4a234f,color:#fff
 ```
- ┌────────────────────┐   sesiones    ┌────────────────────┐   cambios   ┌────────────────────┐
- │                    │  documentadas │                    │  agrupados  │                    │
- │   session-manager  ├──────────────►│  changelog-updater ├────────────►│  release-generator │
- │                    │               │                    │             │                    │
- └────────┬───────────┘               └─────────┬──────────┘             └─────────┬──────────┘
-          │                                     │                                  │
-          │  Registra trabajo                   │  Actualiza seccion               │  Cierra version,
-          │  y decisiones de                    │  [Unreleased] del                │  genera release
-          │  cada sesion IA                     │  CHANGELOG.md                    │  notes y archiva
-          │                                     │                                  │  sesiones
-          ▼                                     ▼                                  ▼
- ┌───────────────────────┐              ┌────────────────────┐             ┌───────────────────────┐
- │ changelog-sessions.md │              │ CHANGELOG.md       │             │ Release Notes         │
- │                       │              │                    │             │ changelog-sessions.md │
- └───────────────────────┘              └────────────────────┘             └───────────────────────┘
-```
 
-1. **session-manager** registra el trabajo realizado durante cada sesion de IA, preservando contexto y decisiones tecnicas.
-2. **changelog-updater** toma esa informacion y actualiza la seccion `[Unreleased]` del `CHANGELOG.md`, agrupando los cambios por sesion.
-3. **release-generator** cierra la version, genera las release notes detalladas y preserva el historico de sesiones en `changelog-sessions.md`.
+| Paso | Skill | Acción | Salida |
+|:----:|:------|:-------|:-------|
+| 1 | `session-manager` | Registra trabajo y decisiones de cada sesión IA. | `changelog-sessions.md` |
+| 2 | `changelog-updater` | Actualiza la sección `[Unreleased]` del CHANGELOG. | `CHANGELOG.md` |
+| 3 | `release-generator` | Cierra versión, genera release notes y archiva sesiones. | Release Notes + histórico |
 
-## Skills
+> [!NOTE]
+> Los tres skills están diseñados para funcionar en conjunto como cadena, pero cada uno puede usarse de forma independiente si solo se necesita una parte del flujo.
 
-### session-manager
+---
 
-Documenta automaticamente el trabajo de sesiones IA preservando contexto, decisiones tecnicas y trazabilidad completa ante compactaciones de memoria.
+## ⚙️ Skills
 
-Ver documentacion completa: [session-manager/README.md](skills/session-manager/README.md)
+### 1. `session-manager`
 
-### changelog-updater
+Documenta automáticamente el trabajo de sesiones IA preservando contexto, decisiones técnicas y trazabilidad completa ante compactaciones de memoria.
 
-Mantiene la seccion `[Unreleased]` del `CHANGELOG.md` actualizada automaticamente, agrupando cambios por sesion de trabajo.
+<details>
+<summary><strong>🔑 Qué hace</strong></summary>
 
-Ver documentacion completa: [changelog-updater/README.md](skills/changelog-updater/README.md)
+- Registra el trabajo realizado en cada sesión de IA.
+- Preserva el contexto y las decisiones técnicas tomadas.
+- Mantiene trazabilidad incluso cuando la memoria del agente se compacta.
+- Genera entradas estructuradas en `changelog-sessions.md`.
 
-### release-generator
+</details>
 
-Automatiza el cierre completo de versiones generando release notes detallados, actualizando CHANGELOG.md y preservando historico de sesiones en `changelog-sessions.md`.
+> Ver documentación completa: [session-manager/README.md](skills/session-manager/README.md)
 
-Ver documentacion completa: [release-generator/README.md](skills/release-generator/README.md)
+---
 
-## Instalacion
+### 2. `changelog-updater`
+
+Mantiene la sección `[Unreleased]` del `CHANGELOG.md` actualizada automáticamente, agrupando cambios por sesión de trabajo.
+
+<details>
+<summary><strong>🔑 Qué hace</strong></summary>
+
+- Consume las sesiones documentadas por `session-manager`.
+- Agrupa los cambios por sesión en la sección `[Unreleased]`.
+- Mantiene el formato estándar de CHANGELOG.
+
+</details>
+
+> Ver documentación completa: [changelog-updater/README.md](skills/changelog-updater/README.md)
+
+---
+
+### 3. `release-generator`
+
+Automatiza el cierre completo de versiones generando release notes detalladas, actualizando `CHANGELOG.md` y preservando el histórico de sesiones.
+
+<details>
+<summary><strong>🔑 Qué hace</strong></summary>
+
+- Cierra la versión actual y genera release notes.
+- Actualiza `CHANGELOG.md` con la nueva versión.
+- Archiva las sesiones procesadas en `changelog-sessions.md`.
+
+</details>
+
+> Ver documentación completa: [release-generator/README.md](skills/release-generator/README.md)
+
+---
+
+## 📦 Instalación
 
 1. Clonar o copiar las carpetas de los skills que se necesiten al directorio de skills del proyecto destino.
 2. Registrar los skills en el archivo `CLAUDE.md` del proyecto, en la tabla de skills disponibles.
-3. Configurar los archivos de documentacion base (`CHANGELOG.md`, `changelog-sessions.md`) segun las instrucciones de cada skill.
+3. Configurar los archivos de documentación base (`CHANGELOG.md`, `changelog-sessions.md`) según las instrucciones de cada skill.
 
-Los tres skills estan disenados para funcionar en conjunto como cadena, pero cada uno puede usarse de forma independiente si solo se necesita una parte del flujo.
+> [!TIP]
+> Si solo necesitas una parte del flujo, puedes instalar skills individuales. No es obligatorio usar los tres.
 
-## Documentacion Adicional
+---
 
-- [instrucciones-documentacion.md](instrucciones-documentacion.md) -- Instrucciones de documentacion del proyecto.
-- [doc_releases_README.md](doc_releases_README.md) -- Documentacion del proceso de releases.
-- [doc_releases_template.md](doc_releases_template.md) -- Template para release notes.
-- [AGENTS.md](AGENTS.md) -- Guia para agentes del proyecto.
+## 📚 Documentación adicional
 
-## Licencia
+| Documento | Descripción |
+|:----------|:------------|
+| [instrucciones-documentacion.md](instrucciones-documentacion.md) | Instrucciones de documentación del proyecto. |
+| [doc_releases_README.md](doc_releases_README.md) | Documentación del proceso de releases. |
+| [doc_releases_template.md](doc_releases_template.md) | Template para release notes. |
+| [AGENTS.md](AGENTS.md) | Guía para agentes del proyecto. |
+
+---
+
+## 📄 Licencia
 
 MIT License
 
 ---
 
-> **Creado por:** Adrian (IPGSoft)
-> **Ultima actualizacion:** 2026-03-21
+> **Creado por:** Adrián (IPGSoft) · **Última actualización:** 2026-03-21
