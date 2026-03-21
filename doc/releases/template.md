@@ -1,4 +1,4 @@
-# ButtonEventSet v[VERSION] - Release Notes
+# [PROYECTO] v[VERSION] - Release Notes
 
 **Fecha de release:** [DD de MMMM de YYYY]  
 **Versión:** [X.Y.Z]  
@@ -11,10 +11,10 @@
 [DESCRIPCIÓN GENERAL DEL RELEASE - 2-3 párrafos]
 
 [Ejemplo para v1.0.0:
-"ButtonEventSet v1.0.0 es un componente de interfaz de usuario que transforma botones HTML estándar en selectores avanzados de fechas y horas..."]
+"[PROYECTO] v1.0.0 es un componente de interfaz de usuario que transforma botones HTML estándar en selectores avanzados de fechas y horas..."]
 
 [Ejemplo para v1.0.1:
-"ButtonEventSet v1.0.1 es un release de mantenimiento enfocado en **calidad y robustez del código**, alcanzando **100% de tests pasando**..."]
+"[PROYECTO] v1.0.1 es un release de mantenimiento enfocado en **calidad y robustez del código**, alcanzando **100% de tests pasando**..."]
 
 **Logros principales:**
 - ✅ [LOGRO 1 con métricas]

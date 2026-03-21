@@ -454,3 +454,8 @@ cp references/workflow-detailed.md references/
 ## 📞 Soporte
 
 Para reportar issues o sugerir mejoras, contactar al autor o abrir issue en el repositorio del proyecto.
+
+---
+
+> **Creado por:** Adrian (IPGSoft)
+> **Última actualización:** 2026-03-21
