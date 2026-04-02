@@ -18,19 +18,19 @@ Define alias estandarizados para agentes IA que se usan en nomenclatura de archi
 |-----------|-------|-------------|
 | Claude (Anthropic) | `CLAUDE` | Claude en claude.ai |
 | Claude Code | `CLAUDECODE` | Claude Code (CLI tool) |
-| Claude Sonnet | `SONNET` | Claude Sonnet específicamente |
-| Claude Opus | `OPUS` | Claude Opus específicamente |
-| Claude Haiku | `HAIKU` | Claude Haiku específicamente |
-| GPT-4 (OpenAI) | `GPT4` | GPT-4 en ChatGPT o API |
-| GPT-4o | `GPT4O` | GPT-4o (omni) |
-| GPT-3.5 | `GPT35` | GPT-3.5 Turbo |
+| Claude Sonnet | `CLAUDECODE` | Claude Sonnet específicamente |
+| Claude Opus | `CLAUDECODE` | Claude Opus específicamente |
+| Claude Haiku | `CLAUDECODE` | Claude Haiku específicamente |
+| GPT-4 (OpenAI) | `CODEX` | GPT-4 en ChatGPT o API |
+| GPT-4o | `CODEX` | GPT-4o (omni) |
+| GPT-3.5 | `CODEX` | GPT-3.5 Turbo |
 | GitHub Copilot | `COPILOT` | GitHub Copilot en VS Code |
-| GitHub Copilot Chat | `COPILOTCHAT` | Copilot Chat (conversacional) |
+| GitHub Copilot Chat | `COPILOT` | Copilot Chat (conversacional) |
 | Cursor | `CURSOR` | Cursor AI editor |
 | Codeium | `CODEIUM` | Codeium AI assistant |
 | Tabnine | `TABNINE` | Tabnine autocomplete |
 | Gemini (Google) | `GEMINI` | Google Gemini |
-| Gemini Pro | `GEMINIPRO` | Gemini Pro específicamente |
+| Gemini Pro | `GEMINI` | Gemini Pro específicamente |
 | CodeLlama | `CODELLAMA` | Meta CodeLlama |
 | Llama 3 | `LLAMA3` | Meta Llama 3 |
 | Mixtral | `MIXTRAL` | Mistral AI Mixtral |
@@ -57,9 +57,9 @@ Si usas un agente no en esta tabla:
 **Archivo de sesión:**
 ```
 20260211-001-adrian-CLAUDE.md
-20260211-002-maria-GPT4.md
+20260211-002-maria-CODEX.md
 20260211-003-carlos-COPILOT.md
-20260212-001-adrian-SONNET.md
+20260212-001-adrian-CLAUDECODE.md
 ```
 
 ## Sanitización
