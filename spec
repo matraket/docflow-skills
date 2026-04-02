@@ -1,1 +1,0 @@
-../seedspec/spec/
